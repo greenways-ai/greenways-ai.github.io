@@ -22,21 +22,12 @@ body {
     system-ui,
     sans-serif;
 }
-header,
 footer,
 #projects {
   width: min(1200px, calc(100% - 40px));
   margin: auto;
 }
-body > header {
-  height: 86px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--gw-line);
-}
-.brand,
-nav {
+.brand {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -51,13 +42,15 @@ nav {
   font-style: normal;
   color: var(--gw-verdigris);
 }
-nav a {
+.gw-header__desktop a {
   color: inherit;
   text-decoration: none;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+.gw-header { width: 100%; margin: 0; }
+.gw-theme-menu button { cursor: pointer; }
 .mark {
   width: 42px;
   height: 42px;
@@ -185,9 +178,6 @@ footer {
   font-size: 0.78rem;
 }
 @media (max-width: 720px) {
-  nav a {
-    display: none;
-  }
   .projects {
     grid-template-columns: 1fr;
   }

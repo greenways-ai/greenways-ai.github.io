@@ -20,17 +20,28 @@
     <script type="module" src="./script.js"></script>
   </head>
   <body>
-    <header>
-      <a class="brand" href="./"
+    <header class="gw-header" data-gw-header>
+      <a class="gw-brand brand" href="./"
         ><img class="mark" src="./sigil.svg" width="42" height="42" alt=""
         ><span>GREENWAYS <i>OPEN SOURCE</i></span></a
       >
-      <nav>
-        <a href="#projects">Foundations</a
-        ><a href="https://github.com/greenways-ai">GitHub ↗</a
-        ><button class="gw-theme-toggle__button" data-theme-button>Auto</button>
+      <button class="gw-search-trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span>Search</span><kbd>⌘ K</kbd></button>
+      <nav class="gw-header__desktop" aria-label="Primary">
+        <a href="#projects">Foundations</a>
+        <details class="gw-project-menu"><summary>Projects</summary><div class="gw-popover">
+          <a href="./hestia/">Hestia</a><a href="./hoplite/">Hoplite</a><a href="./historia/">Historia</a><a href="./visual-language/">Visual language</a>
+        </div></details>
+        <a href="https://github.com/greenways-ai">GitHub ↗</a>
       </nav>
+      <details class="gw-theme-menu"><summary class="gw-control" aria-label="Choose appearance"><span data-theme-label>Auto</span></summary><div class="gw-popover gw-theme-menu__popover" role="menu">
+        <button type="button" data-theme-choice="auto" role="menuitemradio"><span>Auto</span><span data-theme-check>✓</span></button>
+        <button type="button" data-theme-choice="light" role="menuitemradio"><span>Light</span><span data-theme-check>✓</span></button>
+        <button type="button" data-theme-choice="dark" role="menuitemradio"><span>Dark</span><span data-theme-check>✓</span></button>
+      </div></details>
+      <button class="gw-control gw-menu-trigger" type="button" data-menu-open aria-label="Open navigation">☰</button>
     </header>
+    <dialog class="gw-dialog" data-search-dialog aria-label="Search this site"><form method="dialog" class="gw-dialog__bar"><label><span>Search</span><input type="search" data-search-input autocomplete="off" placeholder="Search Greenways open source" /></label><button class="gw-control" value="close">Close</button></form><div class="gw-search-results" data-search-results aria-live="polite"><p>Begin typing to search the collection.</p></div></dialog>
+    <dialog class="gw-dialog gw-menu-dialog" data-menu-dialog aria-label="Navigation"><form method="dialog"><button class="gw-control" value="close">Close</button></form><nav><a href="#projects">Foundations</a><a href="./hestia/">Hestia</a><a href="./hoplite/">Hoplite</a><a href="./historia/">Historia</a><a href="./visual-language/">Visual language</a><a href="https://github.com/greenways-ai">GitHub ↗</a></nav></dialog>
     <main>
       <section class="hero">
         <div class="hero-art" aria-hidden="true"></div>
