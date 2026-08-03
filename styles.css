@@ -60,15 +60,9 @@ nav a {
 }
 .mark {
   width: 42px;
-  aspect-ratio: 1;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 1px;
-  padding: 4px;
-  background: #07100e;
-}
-.mark i[data-on="true"] {
-  background: #33a878;
+  height: 42px;
+  display: block;
+  border-radius: 7px;
 }
 .hero {
   position: relative;
