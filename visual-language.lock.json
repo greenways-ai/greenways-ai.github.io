@@ -1,0 +1,11 @@
+{
+  "package": "@greenways-ai/visual-language",
+  "version": "3.0.1",
+  "repository": "greenways-ai/visual-language",
+  "commit": "f4e357fedbe4eab19e8a218546f2bb3621a9b93a",
+  "files": {
+    "assets/theme.css": "18c5b09045573a6227a8c866f8f76489b3a8ae29",
+    "assets/theme.js": "c34a39ad8f81a3b9be3ab830e418f688d6c0f7e2",
+    "sigil.svg": "3221f8fa6a6c06ab315a519bf10e1721819a7cd6"
+  }
+}
