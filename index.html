@@ -4,6 +4,7 @@
   data-theme="light"
   data-theme-preference="auto"
   data-project="greenways"
+  data-visual-language="3.0.1"
 >
   <head>
     <meta charset="utf-8" />
@@ -12,6 +13,7 @@
       name="description"
       content="Open foundations from Greenways: precise tools for a world built to be explored."
     />
+    <meta name="theme-color" content="#f4f2ec" />
     <title>Greenways Open Source</title>
     <link rel="icon" href="./sigil.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/theme.css" />
@@ -20,32 +22,175 @@
     <script type="module" src="./script.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="gw-header" data-gw-header>
-      <a class="gw-brand brand" href="./"
-        ><img class="mark" src="./sigil.svg" width="42" height="42" alt=""
-        ><span>GREENWAYS <i>OPEN SOURCE</i></span></a
-      >
-      <button class="gw-search-trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span>Search</span><kbd>⌘ K</kbd></button>
+      <a class="gw-brand" href="./" aria-label="Greenways Open Source home">
+        <svg
+          class="gw-sigil gw-sigil--greenways"
+          viewBox="0 0 64 64"
+          role="img"
+          aria-label="Greenways sigil"
+        >
+          <defs>
+            <pattern
+              id="gw-greenways-tessera"
+              width="16"
+              height="16"
+              patternUnits="userSpaceOnUse"
+            >
+              <rect class="gw-sigil__grout" width="16" height="16" />
+              <rect
+                class="gw-sigil__tessera--1"
+                x="1"
+                y="1"
+                width="6"
+                height="6"
+                rx=".7"
+              />
+              <rect
+                class="gw-sigil__tessera--2"
+                x="9"
+                y="1"
+                width="6"
+                height="6"
+                rx=".7"
+              />
+              <rect
+                class="gw-sigil__tessera--3"
+                x="1"
+                y="9"
+                width="6"
+                height="6"
+                rx=".7"
+              />
+              <rect
+                class="gw-sigil__tessera--4"
+                x="9"
+                y="9"
+                width="6"
+                height="6"
+                rx=".7"
+              />
+            </pattern>
+          </defs>
+          <rect
+            class="gw-sigil__ground"
+            x="1"
+            y="1"
+            width="62"
+            height="62"
+            rx="11"
+          />
+          <g class="gw-sigil__tiles">
+            <path d="M32 7 42 21 32 30 22 21Z" />
+            <path d="m44 22 13 8-13 9-10-7Z" />
+            <path d="m44 41 9 12-17-3-2-15Z" />
+            <path d="m30 35-2 15-17 3 9-12Z" />
+            <path d="M20 39 7 30l13-8 10 10Z" />
+            <path
+              class="gw-sigil__eye"
+              d="M20 31c6-9 18-9 24 0-6 10-18 10-24 0Z"
+            />
+            <path
+              class="gw-sigil__pupil"
+              d="m32 25 6 6-6 7-6-7Z"
+            />
+          </g>
+        </svg>
+        <span>Greenways <i>Open Source</i></span>
+      </a>
+      <button class="gw-search-trigger" type="button" data-search-open>
+        <span aria-hidden="true">⌕</span><span>Search</span><kbd>⌘ K</kbd>
+      </button>
       <nav class="gw-header__desktop" aria-label="Primary">
         <a href="#projects">Foundations</a>
-        <details class="gw-project-menu"><summary>Projects</summary><div class="gw-popover">
-          <a href="./hestia/">Hestia</a><a href="./hoplite/">Hoplite</a><a href="./historia/">Historia</a><a href="./visual-language/">Visual language</a>
-        </div></details>
+        <details class="gw-project-menu">
+          <summary>Projects</summary>
+          <div class="gw-popover">
+            <a href="./hestia/">Hestia</a>
+            <a href="./hoplite/">Hoplite</a>
+            <a href="./historia/">Historia</a>
+            <a href="./visual-language/">Visual language</a>
+          </div>
+        </details>
+        <a href="https://github.com/greenways-ai" aria-label="Greenways AI on GitHub"
+          >GitHub ↗</a
+        >
+      </nav>
+      <details class="gw-theme-menu" data-theme-menu>
+        <summary class="gw-control" aria-label="Choose appearance">
+          <span data-theme-icon aria-hidden="true">◐</span>
+          <span class="gw-control__label">Theme</span>
+        </summary>
+        <div
+          class="gw-popover gw-theme-menu__popover"
+          role="menu"
+          aria-label="Appearance"
+        >
+          <button type="button" data-theme-choice="auto" role="menuitemradio">
+            <span>Automatic</span
+            ><span aria-hidden="true" data-theme-check="auto">✓</span>
+          </button>
+          <button type="button" data-theme-choice="light" role="menuitemradio">
+            <span>Light</span
+            ><span aria-hidden="true" data-theme-check="light">✓</span>
+          </button>
+          <button type="button" data-theme-choice="dark" role="menuitemradio">
+            <span>Dark</span
+            ><span aria-hidden="true" data-theme-check="dark">✓</span>
+          </button>
+        </div>
+      </details>
+      <button
+        class="gw-control gw-menu-trigger"
+        type="button"
+        data-menu-open
+        aria-label="Open navigation"
+      >
+        ☰
+      </button>
+    </header>
+    <dialog
+      class="gw-dialog gw-search-dialog"
+      data-search-dialog
+      aria-label="Search this site"
+    >
+      <form method="dialog" class="gw-dialog__bar">
+        <label
+          ><span>Search</span
+          ><input
+            type="search"
+            data-search-input
+            autocomplete="off"
+            placeholder="Search Greenways open source"
+        /></label>
+        <button class="gw-control" value="close">Close</button>
+      </form>
+      <div class="gw-search-results" data-search-results aria-live="polite">
+        <p>Begin typing to search the collection.</p>
+      </div>
+    </dialog>
+    <dialog
+      class="gw-dialog gw-menu-dialog"
+      data-menu-dialog
+      aria-label="Navigation"
+    >
+      <form method="dialog">
+        <button class="gw-control" value="close">Close</button>
+      </form>
+      <nav>
+        <a href="#projects">Foundations</a>
+        <a href="./hestia/">Hestia</a>
+        <a href="./hoplite/">Hoplite</a>
+        <a href="./historia/">Historia</a>
+        <a href="./visual-language/">Visual language</a>
         <a href="https://github.com/greenways-ai">GitHub ↗</a>
       </nav>
-      <details class="gw-theme-menu"><summary class="gw-control" aria-label="Choose appearance"><span data-theme-label>Auto</span></summary><div class="gw-popover gw-theme-menu__popover" role="menu">
-        <button type="button" data-theme-choice="auto" role="menuitemradio"><span>Auto</span><span data-theme-check>✓</span></button>
-        <button type="button" data-theme-choice="light" role="menuitemradio"><span>Light</span><span data-theme-check>✓</span></button>
-        <button type="button" data-theme-choice="dark" role="menuitemradio"><span>Dark</span><span data-theme-check>✓</span></button>
-      </div></details>
-      <button class="gw-control gw-menu-trigger" type="button" data-menu-open aria-label="Open navigation">☰</button>
-    </header>
-    <dialog class="gw-dialog" data-search-dialog aria-label="Search this site"><form method="dialog" class="gw-dialog__bar"><label><span>Search</span><input type="search" data-search-input autocomplete="off" placeholder="Search Greenways open source" /></label><button class="gw-control" value="close">Close</button></form><div class="gw-search-results" data-search-results aria-live="polite"><p>Begin typing to search the collection.</p></div></dialog>
-    <dialog class="gw-dialog gw-menu-dialog" data-menu-dialog aria-label="Navigation"><form method="dialog"><button class="gw-control" value="close">Close</button></form><nav><a href="#projects">Foundations</a><a href="./hestia/">Hestia</a><a href="./hoplite/">Hoplite</a><a href="./historia/">Historia</a><a href="./visual-language/">Visual language</a><a href="https://github.com/greenways-ai">GitHub ↗</a></nav></dialog>
-    <main>
+    </dialog>
+    <main id="main-content">
       <section class="hero">
-        <div class="hero-art" aria-hidden="true"></div>
-        <div class="veil"></div>
+        <div class="hero-art gw-themed-artwork" aria-hidden="true"></div>
+        <div class="veil" aria-hidden="true"></div>
         <div class="copy">
           <p class="kicker">OPEN FOUNDATIONS · BUILT WITH EXCELLENT TOOLS</p>
           <h1>Enter the<br />green world.</h1>
@@ -62,48 +207,48 @@
           <h2>Four foundations.<br />One exacting house.</h2>
         </header>
         <div class="projects">
-          <a href="./hestia/"
-            ><small>01 · OXBLOOD</small>
+          <a href="./hestia/" data-project-card="hestia">
+            <small>01 · OXBLOOD</small>
             <h3>Hestia</h3>
             <p>
               Personal identity, trusted recovery, and a greyhound at the
               winter-garden hearth.
             </p>
-            <span>Enter Hestia →</span></a
-          >
-          <a href="./hoplite/"
-            ><small>02 · ANTIQUE GOLD</small>
+            <span>Enter Hestia →</span>
+          </a>
+          <a href="./hoplite/" data-project-card="hoplite">
+            <small>02 · ANTIQUE GOLD</small>
             <h3>Hoplite</h3>
             <p>
               A disciplined application squad: small, fast, coordinated, and
               ready.
             </p>
-            <span>Enter Hoplite →</span></a
-          >
-          <a href="./historia/"
-            ><small>03 · MIDNIGHT SAPPHIRE</small>
+            <span>Enter Hoplite →</span>
+          </a>
+          <a href="./historia/" data-project-card="historia">
+            <small>03 · MIDNIGHT SAPPHIRE</small>
             <h3>Historia</h3>
             <p>
               Git-native memory, symbol lineage, and a raven watching the
               archive.
             </p>
-            <span>Enter Historia →</span></a
-          >
-          <a href="./visual-language/"
-            ><small>04 · AMETHYST SILVER</small>
+            <span>Enter Historia →</span>
+          </a>
+          <a href="./visual-language/" data-project-card="visual-language">
+            <small>04 · VERDIGRIS SILVER</small>
             <h3>Visual language</h3>
             <p>
-              The canonical 7×7 grouted tessera system, adaptive themes, and
-              visual integrity.
+              The canonical grouted tessera system, adaptive themes, and visual
+              integrity.
             </p>
-            <span>Enter the atelier →</span></a
-          >
+            <span>Enter the atelier →</span>
+          </a>
         </div>
       </section>
     </main>
     <footer>
-      <span>Greenways open foundations</span
-      ><span>Code and documentation under Apache-2.0 where noted</span>
+      <span>Greenways open foundations</span>
+      <span>Visual language v3.0.1 · Apache-2.0 where noted</span>
     </footer>
   </body>
 </html>
