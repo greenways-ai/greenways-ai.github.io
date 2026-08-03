@@ -1,3 +1,1 @@
-document.querySelectorAll('[data-year]').forEach((node) => {
-  node.textContent = new Date().getFullYear();
-});
+const pattern=["001101100","011111110","010000010","110110111","110111111","110000111","011101110","001111100","000110000"].join("");document.querySelector("[data-mark]").replaceChildren(...[...pattern].map((v)=>{const i=document.createElement("i");i.dataset.on=v==="1"?"true":"false";return i}));const b=document.querySelector("[data-theme-button]");const labels={auto:"Auto",light:"Light",dark:"Dark"};const sync=()=>b.textContent=labels[document.documentElement.dataset.themePreference||"auto"];b.addEventListener("click",(e)=>{const d=document.documentElement.dataset.theme||"light";window.GreenwaysTheme?.apply(e.shiftKey?"auto":d==="dark"?"light":"dark",true)});window.addEventListener("gw-theme-change",sync);sync();
