@@ -59,11 +59,22 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-const searchable = [...document.querySelectorAll(".projects a")].map((node) => ({
-  href: node.href,
-  title: node.querySelector("h3")?.textContent || "Project",
-  excerpt: node.querySelector("p")?.textContent || "",
-}));
+const searchable = [...document.querySelectorAll("[data-search-item]")].map(
+  (node) => {
+    const title =
+      node.querySelector(".project-name,h2,h3")?.textContent?.trim() ||
+      node.querySelector("small")?.textContent?.trim() ||
+      "Greenways OSS";
+    const excerpt =
+      node.querySelector(".project-tooltip,p")?.textContent?.trim() || "";
+    const href =
+      node instanceof HTMLAnchorElement
+        ? node.href
+        : `${window.location.pathname}#${node.id}`;
+
+    return { href, title, excerpt };
+  },
+);
 
 const searchInput = document.querySelector("[data-search-input]");
 const searchResults = document.querySelector("[data-search-results]");
@@ -96,3 +107,49 @@ searchInput?.addEventListener("input", (event) => {
 
   if (!matches.length) searchResults.innerHTML = "<p>No results found.</p>";
 });
+
+const hero = document.querySelector("[data-hero]");
+const heroSlides = [...document.querySelectorAll("[data-hero-art]")];
+const heroButtons = [...document.querySelectorAll("[data-hero-slide]")];
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let activeSlide = 0;
+let carouselTimer;
+
+const showSlide = (index) => {
+  if (!heroSlides.length) return;
+  activeSlide = (index + heroSlides.length) % heroSlides.length;
+
+  heroSlides.forEach((slide, slideIndex) => {
+    slide.classList.toggle("is-active", slideIndex === activeSlide);
+  });
+  heroButtons.forEach((button, buttonIndex) => {
+    button.setAttribute("aria-pressed", String(buttonIndex === activeSlide));
+  });
+};
+
+const stopCarousel = () => {
+  window.clearInterval(carouselTimer);
+  carouselTimer = undefined;
+};
+
+const startCarousel = () => {
+  stopCarousel();
+  if (reducedMotion.matches || heroSlides.length < 2) return;
+  carouselTimer = window.setInterval(() => showSlide(activeSlide + 1), 9000);
+};
+
+heroButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    showSlide(Number(button.dataset.heroSlide));
+    startCarousel();
+  });
+});
+
+hero?.addEventListener("mouseenter", stopCarousel);
+hero?.addEventListener("mouseleave", startCarousel);
+hero?.addEventListener("focusin", stopCarousel);
+hero?.addEventListener("focusout", startCarousel);
+reducedMotion.addEventListener?.("change", startCarousel);
+
+showSlide(0);
+startCarousel();
