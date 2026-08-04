@@ -71,28 +71,61 @@ test("the document declares the Greenways project and all three theme states", a
   assert.match(html, /assets\/theme\.js/);
 });
 
-test("the catalogue includes every published Greenways foundation", async () => {
+test("the page keeps the canonical visual-language menu system", async () => {
   const html = await read("index.html");
-  assert.match(html, /Five foundations\./);
-  for (const project of ["hestia", "hoplite", "historia", "hodos", "visual-language"]) {
-    assert.match(
-      html,
-      new RegExp(`href="\\./${project}/"`),
-      `${project} is missing from navigation`,
-    );
-    assert.match(
-      html,
-      new RegExp(`data-project-card="${project}"`),
-      `${project} is missing from the collection`,
-    );
+  assert.match(html, /class="gw-search-trigger"/);
+  assert.match(html, /class="gw-project-menu"/);
+  assert.match(html, /class="gw-theme-menu"/);
+  assert.match(html, /class="gw-dialog gw-menu-dialog"/);
+  assert.match(html, /data-search-open/);
+  assert.match(html, /data-menu-open/);
+});
+
+test("the OSS title, component matrix, launcher, and charter are present", async () => {
+  const html = await read("index.html");
+  assert.match(html, /<h1>OSS<\/h1>/);
+  assert.match(html, /01 · COMPONENT MATRIX/);
+  assert.match(html, /Greenways builds durable tools in public\./);
+  for (const project of [
+    "Hestia",
+    "Hoplite",
+    "Historia",
+    "Hodos",
+    "Visual Language",
+  ]) {
+    assert.match(html, new RegExp(`class="project-name">${project}<`));
+  }
+  for (const section of [
+    "OPEN BY DEFAULT",
+    "USABLE FREEDOM",
+    "PUBLIC STEWARDSHIP",
+    "INTEROPERABILITY",
+    "CONTRIBUTORS",
+    "SUSTAINABILITY",
+    "IDENTITY",
+  ]) {
+    assert.match(html, new RegExp(section));
   }
 });
 
-test("the header uses the canonical v4 voronoi Greenways sigil", async () => {
+test("representation file names are not presented as page copy", async () => {
   const html = await read("index.html");
-  assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg" alt="Greenways sigil"/);
+  for (const label of [
+    "Jeweled Archipelago",
+    "Solar Steppe Observatories",
+    "Aurora Conservatory Belt",
+  ]) {
+    assert.doesNotMatch(html, new RegExp(`>\\s*${label}\\s*<`, "i"));
+  }
+});
+
+test("the header uses the heart and peacock-eye mosaic mark", async () => {
+  const html = await read("index.html");
+  assert.match(
+    html,
+    /<img[\s\S]*class="gw-sigil"[\s\S]*src="\.\/visual-language\/sigils\/heart-eye-peacock\.svg"/,
+  );
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.doesNotMatch(html, /gw-sigil--greenways|gw-greenways-tessera|gw-sigil__tessera|gw-glass/);
   assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
   assert.match(html, /twitter:card" content="summary_large_image"/);
 
@@ -155,12 +188,19 @@ test("page styles consume tokens without redefining the shared theme", async () 
   assert.match(css, /background:\s*var\(--gw-canvas\)/);
 });
 
-test("hero artwork uses the shared adaptive artwork primitive", async () => {
+test("hero carousel uses three shared adaptive artwork representations", async () => {
   const html = await read("index.html");
   const css = await read("styles.css");
-  assert.match(html, /hero-art gw-themed-artwork/);
-  assert.match(css, /--gw-art-light:\s*url\("\.\/assets\/greenways-day\.webp"\)/);
-  assert.match(css, /--gw-art-dark:\s*url\("\.\/assets\/greenways-night\.webp"\)/);
+  assert.equal((html.match(/data-hero-art/g) || []).length, 3);
+  assert.equal((html.match(/data-hero-slide=/g) || []).length, 3);
+  for (const artwork of [
+    "jeweled-archipelago",
+    "solar-steppe-observatories",
+    "aurora-conservatory-belt",
+  ]) {
+    assert.match(css, new RegExp(`${artwork}-day\\.webp`));
+    assert.match(css, new RegExp(`${artwork}-night\\.webp`));
+  }
 });
 
 test("essential canonical foreground/background pairs meet WCAG AA", () => {
@@ -173,15 +213,6 @@ test("essential canonical foreground/background pairs meet WCAG AA", () => {
     ["#adb5af", "#0b1410"],
   ]) {
     assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background}`);
-  }
-});
-
-test("project-card labels meet WCAG AA in both themes", () => {
-  for (const foreground of ["#8e2731", "#765b15", "#426fa6", "#1d5e4d", "#0b6b4f"]) {
-    assert.ok(contrast(foreground, "#fbfaf6") >= 4.5, `${foreground} on light surface`);
-  }
-  for (const foreground of ["#dc4b40", "#d7b64e", "#5b86b8", "#70c99a", "#33a878"]) {
-    assert.ok(contrast(foreground, "#0b1410") >= 4.5, `${foreground} on dark surface`);
   }
 });
 
