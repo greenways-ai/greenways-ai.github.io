@@ -1,8 +1,8 @@
 # Greenways Open Source
 
-The static catalogue published at <https://opensource.greenways.ai/>.
+The static catalogue published at <https://oss.greenways.ai/>.
 
-- Production: `https://opensource.greenways.ai/`
+- Production: `https://oss.greenways.ai/`
 - Hosting: GitHub Pages from the default branch, with the custom domain recorded in `CNAME`
 - Build: none; the repository is published directly
 

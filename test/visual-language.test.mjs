@@ -93,7 +93,7 @@ test("the header uses the canonical v4 voronoi Greenways sigil", async () => {
   assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg" alt="Greenways sigil"/);
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
   assert.doesNotMatch(html, /gw-sigil--greenways|gw-greenways-tessera|gw-sigil__tessera|gw-glass/);
-  assert.match(html, /content="https:\/\/opensource\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
+  assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
   assert.match(html, /twitter:card" content="summary_large_image"/);
 
   const sigil = await read("sigil.svg");
@@ -111,7 +111,7 @@ test("the header uses the canonical v4 voronoi Greenways sigil", async () => {
 test("the historian redirect page carries the v4 historian sigil and og card", async () => {
   const html = await read("historian/index.html");
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.match(html, /content="https:\/\/opensource\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/);
+  assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/);
   const sigil = await read("historian/sigil.svg");
   assert.match(sigil, /viewBox="0 0 480 480"/);
   assert.match(sigil, /prefers-color-scheme:\s*dark/);

@@ -355,8 +355,8 @@ footer {
   position: absolute;
   inset: 0;
   z-index: -2;
-  --gw-art-light: url("https://opensource.greenways.ai/visual-language/artwork/www/world-confluence-day.webp");
-  --gw-art-dark: url("https://opensource.greenways.ai/visual-language/artwork/www/world-confluence-night.webp");
+  --gw-art-light: url("https://oss.greenways.ai/visual-language/artwork/www/world-confluence-day.webp");
+  --gw-art-dark: url("https://oss.greenways.ai/visual-language/artwork/www/world-confluence-night.webp");
   --gw-art-light-position: center;
   --gw-art-dark-position: center;
 }
