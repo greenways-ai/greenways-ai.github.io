@@ -1,14 +1,14 @@
 {
   "package": "@greenways-ai/visual-language",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "repository": "greenways-ai/visual-language",
-  "commit": "b0644f36f7265f32590f0f4f884bbb1650a3755a",
+  "commit": "c5b5d560f08e26b2b33433fdae4fe3f7779d2374",
   "files": {
     "assets/theme.css": "97df065b4479ff710068a1cc3e1d846da6c91e1b",
     "assets/theme.js": "c34a39ad8f81a3b9be3ab830e418f688d6c0f7e2",
-    "sigil.svg": "7c953ed89c9a4e0bdb010ccc094861652fcc5b7a",
-    "favicon.svg": "4f9cfa09cbea3f2edb55ce9290024169bed2f4fa",
-    "historian/sigil.svg": "98ad432f9508bee60793371c03a1063bf0d108cb",
-    "historian/favicon.svg": "9fed17ff0fd7feaa2eed416c544ed5e0ff69c334"
+    "sigil.svg": "96da432e30ba77defd3b6ba3cb7f8b7c29f25c20",
+    "favicon.svg": "65afc925c34ef8cc62a548eeca224d1fe3d8e3ea",
+    "historian/sigil.svg": "f182f8c6cdf621013a11b29d25ce632249f65be4",
+    "historian/favicon.svg": "8cb92b5660601c4f4c3417fe6526c580a44686eb"
   }
 }
