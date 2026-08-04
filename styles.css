@@ -20,7 +20,7 @@
   --gw-cyan: #54d9f2;
   --gw-cyan-soft: #b9f5f8;
   --gw-deep-aqua: #061f20;
-  --gw-ink-aqua: #dffcf8;
+  --gw-ink-aqua: #062b2c;
   --gw-peacock-blue: #3b93c7;
   --gw-peacock-violet: #8b7bd0;
   --gw-home-glow: color-mix(in srgb, var(--gw-cyan) 24%, transparent);
@@ -211,6 +211,15 @@ a {
   color: var(--gw-cyan-soft);
   font: 800 0.73rem/1.3 IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, monospace;
   letter-spacing: 0.2em;
+}
+
+.section .kicker,
+.builder-callout .kicker {
+  color: var(--gw-aqua);
+}
+
+.standards-panel .kicker {
+  color: var(--gw-cyan-soft);
 }
 
 h1,
