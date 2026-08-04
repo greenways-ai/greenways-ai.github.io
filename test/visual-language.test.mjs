@@ -76,7 +76,7 @@ test("the page keeps the canonical visual-language menu system", async () => {
   assert.match(html, /class="gw-search-trigger"/);
   assert.match(html, /class="gw-project-menu"/);
   assert.match(html, /class="gw-theme-menu"/);
-  assert.match(html, /class="gw-menu-dialog"/);
+  assert.match(html, /class="gw-dialog gw-menu-dialog"/);
   assert.match(html, /data-search-open/);
   assert.match(html, /data-menu-open/);
 });
