@@ -56,7 +56,7 @@ test("vendored visual-language primitives match the pinned release", async () =>
   }
 });
 
-test("the document declares the Greenways project and all three theme states", async () => {
+test("the document declares the Greenways project and adaptive theme state", async () => {
   const html = await read("index.html");
   assert.match(html, /data-project="greenways"/);
   assert.match(html, /data-theme-preference="auto"/);
@@ -64,37 +64,70 @@ test("the document declares the Greenways project and all three theme states", a
     html,
     new RegExp(`data-visual-language="${lock.version.replaceAll(".", "\\.")}"`),
   );
-  for (const theme of ["auto", "light", "dark"]) {
-    assert.match(html, new RegExp(`data-theme-choice="${theme}"`));
-  }
   assert.match(html, /assets\/theme\.css/);
   assert.match(html, /assets\/theme\.js/);
+  assert.match(html, /data-theme-toggle/);
 });
 
-test("the page keeps the canonical visual-language menu system", async () => {
+test("the header follows the Hoplite menu and title hierarchy", async () => {
   const html = await read("index.html");
-  assert.match(html, /class="gw-search-trigger"/);
-  assert.match(html, /class="gw-project-menu"/);
-  assert.match(html, /class="gw-theme-menu"/);
-  assert.match(html, /class="gw-dialog gw-menu-dialog"/);
+  assert.match(html, /class="oss-header"/);
+  assert.match(html, /class="oss-header__brand"/);
+  assert.match(html, /class="oss-header__desktop"/);
+  assert.match(html, /class="oss-header__menu"/);
+  assert.match(html, /class="oss-header__control"/);
   assert.match(html, /data-search-open/);
-  assert.match(html, /data-menu-open/);
+  assert.match(html, /data-theme-toggle/);
+  assert.match(html, />Overview<\/a>/);
+  assert.match(html, />Charter<\/a>/);
+  assert.match(html, />Projects<\/a>/);
+  assert.match(html, />Visual language<\/a>/);
+  assert.match(html, />GitHub ↗<\/a>/);
+  assert.doesNotMatch(html, /class="gw-theme-menu"/);
+  assert.doesNotMatch(html, /class="gw-dialog gw-menu-dialog"/);
 });
 
-test("the OSS title, component matrix, launcher, and charter are present", async () => {
+test("Open Source and all seven applications live in the hero", async () => {
   const html = await read("index.html");
-  assert.match(html, /<h1>OSS<\/h1>/);
-  assert.match(html, /01 · COMPONENT MATRIX/);
-  assert.match(html, /Greenways builds durable tools in public\./);
+  const heroStart = html.indexOf('<section id="top"');
+  const charterStart = html.indexOf('<section id="charter"');
+  const launcherStart = html.indexOf('id="projects"');
+
+  assert.ok(heroStart >= 0);
+  assert.ok(launcherStart > heroStart);
+  assert.ok(charterStart > launcherStart);
+  assert.match(html, /<h1>Open Source<\/h1>/);
+
   for (const project of [
+    "Hara",
     "Hestia",
     "Hoplite",
     "Historia",
     "Hodos",
+    "Greenways OS",
     "Visual Language",
   ]) {
-    assert.match(html, new RegExp(`class="project-name">${project}<`));
+    assert.match(html, new RegExp(`class="app-name">${project}<`));
   }
+});
+
+test("the launcher uses the canonical Historia and Visual Language motifs", async () => {
+  const html = await read("index.html");
+  assert.match(
+    html,
+    /src="\.\/visual-language\/sigils\/mountain-pair\.svg"[\s\S]*class="app-name">Historia</,
+  );
+  assert.match(
+    html,
+    /src="\.\/visual-language\/sigils\/lotus-three\.svg"[\s\S]*class="app-name">Visual Language</,
+  );
+});
+
+test("the charter follows the hero and keeps all seven commitments", async () => {
+  const html = await read("index.html");
+  assert.match(html, /01 · Open Source Charter · 1\.0/);
+  assert.match(html, /Greenways builds durable tools in public\./);
+
   for (const section of [
     "OPEN BY DEFAULT",
     "USABLE FREEDOM",
@@ -123,10 +156,13 @@ test("the header uses the heart and peacock-eye mosaic mark", async () => {
   const html = await read("index.html");
   assert.match(
     html,
-    /<img[\s\S]*class="gw-sigil"[\s\S]*src="\.\/visual-language\/sigils\/heart-eye-peacock\.svg"/,
+    /<img[\s\S]*class="oss-header__sigil"[\s\S]*src="\.\/visual-language\/sigils\/heart-eye-peacock\.svg"/,
   );
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
+  assert.match(
+    html,
+    /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/,
+  );
   assert.match(html, /twitter:card" content="summary_large_image"/);
 
   const sigil = await read("sigil.svg");
@@ -144,7 +180,10 @@ test("the header uses the heart and peacock-eye mosaic mark", async () => {
 test("the historian redirect page carries the v4 historian sigil and og card", async () => {
   const html = await read("historian/index.html");
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/);
+  assert.match(
+    html,
+    /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/,
+  );
   const sigil = await read("historian/sigil.svg");
   assert.match(sigil, /viewBox="0 0 480 480"/);
   assert.match(sigil, /prefers-color-scheme:\s*dark/);
@@ -184,7 +223,11 @@ test("page styles consume tokens without redefining the shared theme", async () 
       `styles.css must not redefine --gw-${token}`,
     );
   }
-  assert.doesNotMatch(css, /#030504|#0b100e|#111815/i, "legacy forced-black palette returned");
+  assert.doesNotMatch(
+    css,
+    /#030504|#0b100e|#111815/i,
+    "legacy forced-black palette returned",
+  );
   assert.match(css, /background:\s*var\(--gw-canvas\)/);
 });
 
@@ -232,7 +275,8 @@ test("keyboard and reduced-motion affordances stay present", async () => {
   const html = await read("index.html");
   const css = `${await read("assets/theme.css")}\n${await read("styles.css")}`;
   assert.match(html, /class="skip-link"/);
-  assert.match(html, /aria-label="Choose appearance"/);
+  assert.match(html, /aria-label="Toggle colour theme"/);
+  assert.match(html, /title="Toggle light or dark\. Shift-click to follow the system theme\."/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
