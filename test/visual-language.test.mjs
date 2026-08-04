@@ -64,6 +64,15 @@ test("the document declares the Greenways project and all three theme states", a
   assert.match(html, /assets\/theme\.js/);
 });
 
+test("the catalogue includes every published Greenways foundation", async () => {
+  const html = await read("index.html");
+  assert.match(html, /Five foundations\./);
+  for (const project of ["hestia", "hoplite", "historia", "hodos", "visual-language"]) {
+    assert.match(html, new RegExp(`href="\\./${project}/"`), `${project} is missing from navigation`);
+    assert.match(html, new RegExp(`data-project-card="${project}"`), `${project} is missing from the collection`);
+  }
+});
+
 test("the header uses the canonical tessellated Greenways sigil", async () => {
   const html = await read("index.html");
   assert.match(html, /gw-sigil--greenways/);
@@ -125,6 +134,15 @@ test("essential canonical foreground/background pairs meet WCAG AA", () => {
     ["#adb5af", "#0b1410"],
   ]) {
     assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background}`);
+  }
+});
+
+test("project-card labels meet WCAG AA in both themes", () => {
+  for (const foreground of ["#8e2731", "#765b15", "#426fa6", "#1d5e4d", "#0b6b4f"]) {
+    assert.ok(contrast(foreground, "#fbfaf6") >= 4.5, `${foreground} on light surface`);
+  }
+  for (const foreground of ["#dc4b40", "#d7b64e", "#5b86b8", "#70c99a", "#33a878"]) {
+    assert.ok(contrast(foreground, "#0b1410") >= 4.5, `${foreground} on dark surface`);
   }
 });
 
