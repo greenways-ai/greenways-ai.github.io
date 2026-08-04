@@ -215,11 +215,15 @@ footer a:focus-visible {
 }
 
 .projects a[data-project-card="hoplite"] {
-  --card-accent: #967a37;
+  --card-accent: #765b15;
 }
 
 .projects a[data-project-card="historia"] {
   --card-accent: #426fa6;
+}
+
+.projects a[data-project-card="hodos"] {
+  --card-accent: #1d5e4d;
 }
 
 .projects a[data-project-card="visual-language"] {
@@ -238,6 +242,10 @@ footer a:focus-visible {
   --card-accent: #5b86b8;
 }
 
+:root[data-theme="dark"] .projects a[data-project-card="hodos"] {
+  --card-accent: #70c99a;
+}
+
 .projects a:hover {
   z-index: 1;
   background: color-mix(in srgb, var(--card-accent) 9%, var(--gw-surface));
@@ -246,6 +254,7 @@ footer a:focus-visible {
 
 .projects small {
   color: var(--card-accent);
+  font-weight: 700;
   letter-spacing: 0.14em;
 }
 
@@ -275,6 +284,21 @@ footer {
   color: var(--gw-text-muted);
   border-top: 1px solid var(--gw-line);
   font-size: 0.78rem;
+}
+
+@media (min-width: 721px) {
+  .projects > a:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    min-height: 300px;
+  }
+
+  .projects > a:last-child:nth-child(odd) h3 {
+    margin-top: 52px;
+  }
+
+  .projects > a:last-child:nth-child(odd) p {
+    max-width: 620px;
+  }
 }
 
 @media (max-width: 720px) {
