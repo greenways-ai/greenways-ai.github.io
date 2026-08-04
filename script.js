@@ -7,6 +7,21 @@ const themeButtons = document.querySelectorAll("[data-theme-toggle]");
 
 const themeColors = { light: "#f4f2ec", dark: "#050a08" };
 
+const fallbackImageUrl = new URL("./favicon.svg", window.location.href).href;
+const installImageFallback = (image) => {
+  const useFallback = () => {
+    if (image.src === fallbackImageUrl) return;
+    image.src = fallbackImageUrl;
+    image.classList.add("is-fallback");
+  };
+  image.addEventListener("error", useFallback, { once: true });
+  if (image.complete && image.naturalWidth === 0) useFallback();
+};
+
+document
+  .querySelectorAll(".oss-header__sigil, .hero-launcher img")
+  .forEach(installImageFallback);
+
 const renderTheme = () => {
   const dark = root.dataset.theme === "dark";
 
