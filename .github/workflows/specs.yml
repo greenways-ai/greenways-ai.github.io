@@ -1,0 +1,55 @@
+name: Specifications
+
+on:
+  pull_request:
+    paths:
+      - 'specs/**'
+      - 'rfcs/**'
+      - 'governance/**'
+      - '.github/workflows/specs.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'specs/**'
+      - 'rfcs/**'
+      - 'governance/**'
+      - '.github/workflows/specs.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required bootstrap files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f specs/README.md
+          test -f governance/STANDARDS_PROCESS.md
+          test -f rfcs/README.md
+          test -f specs/hara/value/draft/specification.edn
+          test -f specs/hara/spec/draft/specification.edn
+
+      - name: Check specification markers
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            grep -q ':spec/id' "$file"
+            grep -q ':spec/version' "$file"
+            grep -q ':spec/status' "$file"
+            grep -q ':spec/conformance' "$file"
+          done < <(find specs -name specification.edn -type f | sort)
+
+      - name: Prevent floating latest references in specification data
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RIn --include='*.edn' ':spec/version[[:space:]]*"latest"' specs; then
+            echo 'Specifications must pin exact versions.' >&2
+            exit 1
+          fi

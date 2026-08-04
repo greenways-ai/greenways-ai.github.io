@@ -1,0 +1,40 @@
+{:spec/id greenways.hara/spec
+ :spec/version "0.1.0"
+ :spec/status :draft
+ :spec/kind :meta-specification
+ :spec/title "Greenways Specification Model"
+ :spec/description
+ "Defines the identity, dependency, contract, execution, conformance, attribution, versioning and publication requirements for Greenways specifications."
+ :spec/requires
+ [{:spec/id greenways.hara/value
+   :spec/version "0.1.0"
+   :spec/hash :unpublished-draft}]
+ :spec/authors
+ [{:identity "github:hoebat"
+   :roles #{:specification-design :data-model :governance-design}}]
+ :spec/license {:id "Apache-2.0"}
+ :spec/contracts
+ {:required-keys
+  #{:spec/id :spec/version :spec/status :spec/kind :spec/requires
+    :spec/authors :spec/license :spec/contracts :spec/conformance}
+  :identity
+  {:logical-id :qualified-symbol
+   :version :semantic-version
+   :authoritative-identity [:spec/id :spec/version :spec/hash]}
+  :dependencies
+  {:exact-version-required true
+   :exact-hash-required-for-published-specs true
+   :cycles :error}
+  :execution
+  {:deterministic true
+   :host-effects false
+   :resource-limits-required-for-consensus true}
+  :publication
+  {:stable-versions-immutable true
+   :signed-manifest-required true
+   :conformance-required true}}
+ :spec/conformance
+ {:status :planned
+  :required-cases
+  #{:valid-document :missing-required-key :dependency-cycle
+    :duplicate-version :invalid-entrypoint :conformance-failure}}}

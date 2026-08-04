@@ -1,0 +1,27 @@
+{:spec/id greenways.hara/value
+ :spec/version "0.1.0"
+ :spec/status :draft
+ :spec/kind :value
+ :spec/title "Canonical Hara Values"
+ :spec/description
+ "Defines the portable value model, canonical encoding and hashing boundary used by Greenways specifications and ledger state."
+ :spec/requires []
+ :spec/authors
+ [{:identity "github:hoebat"
+   :roles #{:specification-design :data-model}}]
+ :spec/license {:id "Apache-2.0"}
+ :spec/contracts
+ {:types
+  #{:nil :boolean :integer :decimal :character :string :bytes
+    :symbol :keyword :list :vector :map :set :tagged}
+  :canonicalisation
+  {:maps :canonical-key-order
+   :sets :canonical-element-order
+   :metadata :excluded-unless-explicitly-tagged}
+  :hashing
+  {:input :canonical-encoding
+   :algorithm :to-be-selected}}
+ :spec/conformance
+ {:status :planned
+  :required-cases
+  #{:round-trip :canonical-map-order :canonical-set-order :invalid-value}}}
