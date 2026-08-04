@@ -46,6 +46,10 @@ function contrast(a, b) {
   return (high + 0.05) / (low + 0.05);
 }
 
+function countMatches(source, pattern) {
+  return [...source.matchAll(pattern)].length;
+}
+
 test("vendored visual-language primitives match the pinned release", async () => {
   for (const [path, expected] of Object.entries(lock.files)) {
     assert.equal(
@@ -56,7 +60,7 @@ test("vendored visual-language primitives match the pinned release", async () =>
   }
 });
 
-test("the document declares the Greenways project and all three theme states", async () => {
+test("the document declares Greenways and a direct light-dark theme control", async () => {
   const html = await read("index.html");
   assert.match(html, /data-project="greenways"/);
   assert.match(html, /data-theme-preference="auto"/);
@@ -64,33 +68,33 @@ test("the document declares the Greenways project and all three theme states", a
     html,
     new RegExp(`data-visual-language="${lock.version.replaceAll(".", "\\.")}"`),
   );
-  for (const theme of ["auto", "light", "dark"]) {
-    assert.match(html, new RegExp(`data-theme-choice="${theme}"`));
-  }
+  assert.match(html, /data-theme-toggle/);
+  assert.match(html, /aria-label="Switch to dark theme"/);
+  assert.doesNotMatch(html, /data-theme-choice=/);
   assert.match(html, /assets\/theme\.css/);
   assert.match(html, /assets\/theme\.js/);
 });
 
-test("the catalogue includes every published Greenways foundation", async () => {
+test("the homepage is builder-first and organised around connected worlds", async () => {
   const html = await read("index.html");
-  assert.match(html, /Five foundations\./);
-  for (const project of ["hestia", "hoplite", "historia", "hodos", "visual-language"]) {
-    assert.match(
-      html,
-      new RegExp(`href="\\./${project}/"`),
-      `${project} is missing from navigation`,
-    );
-    assert.match(
-      html,
-      new RegExp(`data-project-card="${project}"`),
-      `${project} is missing from the collection`,
-    );
-  }
+  assert.match(html, /<h1>Anyone can build a world\.<\/h1>/);
+  assert.match(html, /id="worlds"/);
+  assert.match(html, /id="studio"/);
+  assert.match(html, /id="standards"/);
+  assert.match(html, /BUILD CONNECTED WORLDS/);
+  assert.match(html, /STUDIO WIDGETS/);
+  assert.match(html, /OPEN STANDARDS/);
+  assert.match(html, /We are big in open source\./);
+  assert.match(html, /href="https:\/\/oss\.greenways\.ai\/"/);
+  assert.doesNotMatch(
+    html,
+    /Five foundations|One atelier|Many forms|Luxurious worlds|THE CELESTIAL WORLD|data-project-card/,
+  );
 });
 
 test("the header uses the canonical v4 voronoi Greenways sigil", async () => {
   const html = await read("index.html");
-  assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg" alt="Greenways sigil"/);
+  assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg" alt=""/);
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
   assert.doesNotMatch(html, /gw-sigil--greenways|gw-greenways-tessera|gw-sigil__tessera|gw-glass/);
   assert.match(html, /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
@@ -153,14 +157,29 @@ test("page styles consume tokens without redefining the shared theme", async () 
   }
   assert.doesNotMatch(css, /#030504|#0b100e|#111815/i, "legacy forced-black palette returned");
   assert.match(css, /background:\s*var\(--gw-canvas\)/);
+  assert.doesNotMatch(css, /color:\s*var\(--gw-gold\)/);
 });
 
-test("hero artwork uses the shared adaptive artwork primitive", async () => {
+test("the world carousel begins with Celestial Promenade and uses adaptive artwork", async () => {
   const html = await read("index.html");
-  const css = await read("styles.css");
-  assert.match(html, /hero-art gw-themed-artwork/);
-  assert.match(css, /--gw-art-light:\s*url\("\.\/assets\/greenways-day\.webp"\)/);
-  assert.match(css, /--gw-art-dark:\s*url\("\.\/assets\/greenways-night\.webp"\)/);
+  assert.equal(countMatches(html, /data-world-slide/g), 5);
+  assert.equal(countMatches(html, /world-slide__art gw-themed-artwork/g), 5);
+  assert.match(
+    html,
+    /class="world-slide is-active"[\s\S]*?data-title="Celestial Promenade"/,
+  );
+  for (const asset of [
+    "celestial-promenade-day.webp",
+    "celestial-promenade-night.webp",
+    "celestial-promenade-day-mobile.webp",
+    "celestial-promenade-night-mobile.webp",
+    "peacock-garden-day.webp",
+    "peacock-garden-night.webp",
+    "world-confluence-day.webp",
+    "world-confluence-night.webp",
+  ]) {
+    assert.match(html, new RegExp(asset.replaceAll(".", "\\.")));
+  }
 });
 
 test("essential canonical foreground/background pairs meet WCAG AA", () => {
@@ -176,12 +195,21 @@ test("essential canonical foreground/background pairs meet WCAG AA", () => {
   }
 });
 
-test("project-card labels meet WCAG AA in both themes", () => {
-  for (const foreground of ["#8e2731", "#765b15", "#426fa6", "#1d5e4d", "#0b6b4f"]) {
-    assert.ok(contrast(foreground, "#fbfaf6") >= 4.5, `${foreground} on light surface`);
-  }
-  for (const foreground of ["#dc4b40", "#d7b64e", "#5b86b8", "#70c99a", "#33a878"]) {
-    assert.ok(contrast(foreground, "#0b1410") >= 4.5, `${foreground} on dark surface`);
+test("the aquamarine and cyan presentation keeps essential text contrast", async () => {
+  const css = await read("styles.css");
+  assert.match(css, /--gw-aqua:\s*#087b68/);
+  assert.match(css, /--gw-cyan:\s*#23bde2/);
+  assert.match(css, /--gw-peacock-violet:\s*#5d4b9a/);
+
+  for (const [foreground, background] of [
+    ["#087b68", "#f4f2ec"],
+    ["#24c8a7", "#050a08"],
+    ["#a6eef4", "#062628"],
+    ["#b9f5f8", "#062628"],
+    ["#031b1a", "#18c9ae"],
+    ["#031b1a", "#23bde2"],
+  ]) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background}`);
   }
 });
 
@@ -197,11 +225,18 @@ test("legacy mark dimensions are absent", async () => {
   }
 });
 
-test("keyboard and reduced-motion affordances stay present", async () => {
+test("keyboard, carousel and reduced-motion affordances stay present", async () => {
   const html = await read("index.html");
+  const script = await read("script.js");
   const css = `${await read("assets/theme.css")}\n${await read("styles.css")}`;
   assert.match(html, /class="skip-link"/);
-  assert.match(html, /aria-label="Choose appearance"/);
+  assert.match(html, /data-theme-toggle/);
+  assert.match(html, /aria-label="Show previous world"/);
+  assert.match(html, /aria-label="Show next world"/);
+  assert.match(html, /aria-live="polite"/);
+  assert.match(script, /ArrowLeft/);
+  assert.match(script, /ArrowRight/);
+  assert.match(script, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
