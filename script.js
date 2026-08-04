@@ -1,72 +1,99 @@
-const themeNames = { auto: "Automatic", light: "Light", dark: "Dark" };
-const themeColors = { light: "#f4f2ec", dark: "#050a08" };
-const themeMenu = document.querySelector("[data-theme-menu]");
-const themeSummary = themeMenu?.querySelector("summary");
+const root = document.documentElement;
 const themeColor = document.querySelector('meta[name="theme-color"]');
+const search = document.querySelector("[data-search-dialog]");
+const searchInput = search?.querySelector("[data-search-input]");
+const searchResults = search?.querySelector("[data-search-results]");
+const themeButtons = document.querySelectorAll("[data-theme-toggle]");
 
-const syncThemeControls = () => {
-  const root = document.documentElement;
-  const preference = root.dataset.themePreference || "auto";
-  const resolvedTheme = root.dataset.theme || "light";
+const themeColors = { light: "#f4f2ec", dark: "#050a08" };
 
-  themeMenu?.querySelectorAll("[data-theme-choice]").forEach((choice) => {
-    choice.setAttribute(
-      "aria-checked",
-      String(choice.dataset.themeChoice === preference),
+const renderTheme = () => {
+  const dark = root.dataset.theme === "dark";
+
+  themeButtons.forEach((button) => {
+    button.setAttribute(
+      "aria-label",
+      dark ? "Switch to light theme" : "Switch to dark theme",
     );
+    button.setAttribute("aria-pressed", String(dark));
   });
 
-  if (themeSummary) {
-    themeSummary.setAttribute(
-      "aria-label",
-      `Choose appearance. Current setting: ${themeNames[preference]}.`,
-    );
-  }
-
-  if (themeColor) themeColor.setAttribute("content", themeColors[resolvedTheme]);
+  themeColor?.setAttribute("content", themeColors[dark ? "dark" : "light"]);
 };
 
-themeMenu?.querySelectorAll("[data-theme-choice]").forEach((choice) => {
-  choice.addEventListener("click", () => {
-    window.GreenwaysTheme?.apply(choice.dataset.themeChoice, true);
-    themeMenu.removeAttribute("open");
+const fallbackApply = (preference) => {
+  const dark =
+    preference === "auto"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      : preference === "dark";
+
+  root.dataset.theme = dark ? "dark" : "light";
+  root.dataset.themePreference = preference;
+  root.style.colorScheme = dark ? "dark" : "light";
+
+  try {
+    localStorage.setItem("gw-theme", preference);
+  } catch {
+    // Theme persistence is optional.
+  }
+
+  window.dispatchEvent(
+    new CustomEvent("gw-theme-change", {
+      detail: { preference, theme: dark ? "dark" : "light" },
+    }),
+  );
+};
+
+themeButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const current = root.dataset.theme === "dark" ? "dark" : "light";
+    const next = event.shiftKey ? "auto" : current === "dark" ? "light" : "dark";
+    const theme = window.GreenwaysTheme;
+
+    if (theme?.apply) {
+      theme.apply(next, true);
+    } else {
+      fallbackApply(next);
+    }
+
+    renderTheme();
   });
 });
 
-window.addEventListener("gw-theme-change", syncThemeControls);
-syncThemeControls();
+window.addEventListener("gw-theme-change", renderTheme);
+renderTheme();
 
-const search = document.querySelector("[data-search-dialog]");
-const menu = document.querySelector("[data-menu-dialog]");
-
-const openDialog = (dialog) => {
-  if (!dialog) return;
-  dialog.showModal();
-  requestAnimationFrame(() => dialog.querySelector("input,button,a")?.focus());
+const openSearch = () => {
+  if (!search) return;
+  search.showModal();
+  requestAnimationFrame(() => searchInput?.focus());
 };
 
 document
-  .querySelector("[data-search-open]")
-  ?.addEventListener("click", () => openDialog(search));
-document
-  .querySelector("[data-menu-open]")
-  ?.addEventListener("click", () => openDialog(menu));
+  .querySelectorAll("[data-search-open]")
+  .forEach((button) => button.addEventListener("click", openSearch));
 
 window.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
     event.preventDefault();
-    openDialog(search);
+    openSearch();
   }
+});
+
+document.querySelectorAll(".oss-header__menu a").forEach((link) => {
+  link.addEventListener("click", () => {
+    link.closest("details")?.removeAttribute("open");
+  });
 });
 
 const searchable = [...document.querySelectorAll("[data-search-item]")].map(
   (node) => {
     const title =
-      node.querySelector(".project-name,h2,h3")?.textContent?.trim() ||
+      node.querySelector(".app-name,h2,h3")?.textContent?.trim() ||
       node.querySelector("small")?.textContent?.trim() ||
-      "Greenways OSS";
+      "Greenways Open Source";
     const excerpt =
-      node.querySelector(".project-tooltip,p")?.textContent?.trim() || "";
+      node.querySelector(".app-description,p")?.textContent?.trim() || "";
     const href =
       node instanceof HTMLAnchorElement
         ? node.href
@@ -76,11 +103,8 @@ const searchable = [...document.querySelectorAll("[data-search-item]")].map(
   },
 );
 
-const searchInput = document.querySelector("[data-search-input]");
-const searchResults = document.querySelector("[data-search-results]");
-
-searchInput?.addEventListener("input", (event) => {
-  const term = event.target.value.trim().toLowerCase();
+searchInput?.addEventListener("input", () => {
+  const term = searchInput.value.trim().toLowerCase();
   if (!searchResults) return;
 
   if (term.length < 2) {
@@ -95,17 +119,20 @@ searchInput?.addEventListener("input", (event) => {
   searchResults.replaceChildren(
     ...matches.map((item) => {
       const link = document.createElement("a");
-      const strong = document.createElement("strong");
-      const span = document.createElement("span");
+      const title = document.createElement("strong");
+      const excerpt = document.createElement("span");
+
       link.href = item.href;
-      strong.textContent = item.title;
-      span.textContent = item.excerpt;
-      link.append(strong, span);
+      title.textContent = item.title;
+      excerpt.textContent = item.excerpt;
+      link.append(title, excerpt);
       return link;
     }),
   );
 
-  if (!matches.length) searchResults.innerHTML = "<p>No results found.</p>";
+  if (!matches.length) {
+    searchResults.innerHTML = "<p>No results found.</p>";
+  }
 });
 
 const hero = document.querySelector("[data-hero]");
@@ -117,8 +144,8 @@ let carouselTimer;
 
 const showSlide = (index) => {
   if (!heroSlides.length) return;
-  activeSlide = (index + heroSlides.length) % heroSlides.length;
 
+  activeSlide = (index + heroSlides.length) % heroSlides.length;
   heroSlides.forEach((slide, slideIndex) => {
     slide.classList.toggle("is-active", slideIndex === activeSlide);
   });
@@ -135,7 +162,10 @@ const stopCarousel = () => {
 const startCarousel = () => {
   stopCarousel();
   if (reducedMotion.matches || heroSlides.length < 2) return;
-  carouselTimer = window.setInterval(() => showSlide(activeSlide + 1), 9000);
+
+  carouselTimer = window.setInterval(() => {
+    showSlide(activeSlide + 1);
+  }, 9000);
 };
 
 heroButtons.forEach((button) => {
