@@ -11,20 +11,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Greenways OSS: open tools, standards, and public infrastructure for anyone building on the web."
+      content="Greenways Open Source: durable public tools, standards, and infrastructure for anyone building on the web."
     />
     <meta name="theme-color" content="#f4f2ec" />
-    <meta property="og:title" content="Greenways OSS" />
+    <meta property="og:title" content="Greenways Open Source" />
     <meta
       property="og:description"
-      content="Open tools, standards, and public infrastructure for anyone building on the web."
+      content="Durable public tools, standards, and infrastructure for anyone building on the web."
     />
     <meta
       property="og:image"
       content="https://oss.greenways.ai/visual-language/assets/og-greenways.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>OSS · Greenways</title>
+    <title>Open Source · Greenways</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/theme.css" />
     <link rel="stylesheet" href="./styles.css" />
@@ -34,117 +34,107 @@
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="gw-header" data-gw-header>
-      <a class="gw-brand" href="./" aria-label="Greenways OSS home">
+    <header class="oss-header" data-oss-header>
+      <a class="oss-header__brand" href="./" aria-label="Greenways Open Source home">
         <img
-          class="gw-sigil"
+          class="oss-header__sigil"
           src="./visual-language/sigils/heart-eye-peacock.svg"
           alt=""
           aria-hidden="true"
         />
-        <span>OSS</span>
+        <span>Open Source</span>
       </a>
 
-      <button class="gw-search-trigger" type="button" data-search-open>
-        <span aria-hidden="true">⌕</span><span>Search</span><kbd>⌘ K</kbd>
-      </button>
-
-      <nav class="gw-header__desktop" aria-label="Primary">
-        <a href="#projects">Foundations</a>
+      <nav class="oss-header__desktop" aria-label="Open Source">
+        <a href="#top">Overview</a>
         <a href="#charter">Charter</a>
-        <details class="gw-project-menu">
-          <summary>Projects</summary>
-          <div class="gw-popover">
-            <a href="./hestia/">Hestia</a>
-            <a href="./hoplite/">Hoplite</a>
-            <a href="./historia/">Historia</a>
-            <a href="./hodos/">Hodos</a>
-            <a href="./visual-language/">Visual language</a>
-          </div>
-        </details>
-        <a href="https://github.com/greenways-ai" aria-label="Greenways AI on GitHub"
-          >GitHub ↗</a
-        >
+        <a href="#projects">Projects</a>
+        <a href="./visual-language/">Visual language</a>
+        <a
+          href="https://github.com/greenways-ai"
+          target="_blank"
+          rel="noreferrer"
+        >GitHub ↗</a>
       </nav>
 
-      <details class="gw-theme-menu" data-theme-menu>
-        <summary class="gw-control" aria-label="Choose appearance">
-          <span data-theme-icon aria-hidden="true">◐</span>
-          <span class="gw-control__label">Theme</span>
-        </summary>
-        <div
-          class="gw-popover gw-theme-menu__popover"
-          role="menu"
-          aria-label="Appearance"
-        >
-          <button type="button" data-theme-choice="auto" role="menuitemradio">
-            <span>Automatic</span
-            ><span aria-hidden="true" data-theme-check="auto">✓</span>
-          </button>
-          <button type="button" data-theme-choice="light" role="menuitemradio">
-            <span>Light</span
-            ><span aria-hidden="true" data-theme-check="light">✓</span>
-          </button>
-          <button type="button" data-theme-choice="dark" role="menuitemradio">
-            <span>Dark</span
-            ><span aria-hidden="true" data-theme-check="dark">✓</span>
-          </button>
-        </div>
-      </details>
+      <button
+        class="oss-header__control"
+        type="button"
+        data-search-open
+        aria-label="Search Greenways Open Source"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 4.25 4.25"></path>
+        </svg>
+      </button>
 
       <button
-        class="gw-control gw-menu-trigger"
+        class="oss-header__control oss-header__theme"
         type="button"
-        data-menu-open
-        aria-label="Open navigation"
+        data-theme-toggle
+        aria-label="Toggle colour theme"
+        title="Toggle light or dark. Shift-click to follow the system theme."
       >
-        ☰
+        <span class="oss-header__sr">Toggle colour theme</span>
+        <svg class="oss-header__moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 15.2A8.4 8.4 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"></path>
+        </svg>
+        <svg class="oss-header__sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+        </svg>
       </button>
+
+      <details class="oss-header__menu">
+        <summary class="oss-header__control" aria-label="Open navigation">
+          <span class="oss-header__sr">Menu</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </summary>
+        <nav aria-label="Compact Open Source navigation">
+          <a href="#top">Overview</a>
+          <a href="#charter">Charter</a>
+          <a href="#projects">Projects</a>
+          <a href="./visual-language/">Visual language</a>
+          <a
+            href="https://github.com/greenways-ai"
+            target="_blank"
+            rel="noreferrer"
+          >GitHub ↗</a>
+        </nav>
+      </details>
     </header>
 
     <dialog
-      class="gw-dialog gw-search-dialog"
+      class="oss-search"
       data-search-dialog
-      aria-label="Search this site"
+      aria-label="Search Greenways Open Source"
     >
-      <form method="dialog" class="gw-dialog__bar">
-        <label
-          ><span>Search</span
-          ><input
+      <form method="dialog" class="oss-search__bar">
+        <label>
+          <span class="oss-header__sr">Search Greenways Open Source</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="m16 16 4.25 4.25"></path>
+          </svg>
+          <input
             type="search"
             data-search-input
             autocomplete="off"
-            placeholder="Search Greenways OSS"
-        /></label>
-        <button class="gw-control" value="close">Close</button>
+            placeholder="Search Open Source"
+          />
+        </label>
+        <button class="oss-header__control" value="close">Close</button>
       </form>
-      <div class="gw-search-results" data-search-results aria-live="polite">
-        <p>Begin typing to search the collection.</p>
+      <div class="oss-search__results" data-search-results aria-live="polite">
+        <p>Begin typing to search this site.</p>
       </div>
     </dialog>
 
-    <dialog
-      class="gw-dialog gw-menu-dialog"
-      data-menu-dialog
-      aria-label="Navigation"
-    >
-      <form method="dialog">
-        <button class="gw-control" value="close">Close</button>
-      </form>
-      <nav>
-        <a href="#projects">Foundations</a>
-        <a href="#charter">Charter</a>
-        <a href="./hestia/">Hestia</a>
-        <a href="./hoplite/">Hoplite</a>
-        <a href="./historia/">Historia</a>
-        <a href="./hodos/">Hodos</a>
-        <a href="./visual-language/">Visual language</a>
-        <a href="https://github.com/greenways-ai">GitHub ↗</a>
-      </nav>
-    </dialog>
-
     <main id="main-content">
-      <section class="hero" data-hero>
+      <section id="top" class="hero" data-hero>
         <div
           class="hero-art hero-art--01 gw-themed-artwork is-active"
           data-hero-art
@@ -160,135 +150,161 @@
           data-hero-art
           aria-hidden="true"
         ></div>
-        <div class="veil" aria-hidden="true"></div>
+        <div class="hero__veil" aria-hidden="true"></div>
 
-        <div class="copy">
-          <p class="kicker">GREENWAYS / OPEN SOURCE</p>
-          <h1>OSS</h1>
-          <p>
-            Open tools, standards, and public infrastructure for anyone building
-            on the web.
-          </p>
-          <a class="button" href="#projects">Browse the foundations ↓</a>
-        </div>
+        <div class="hero__shell">
+          <div class="hero__copy">
+            <p class="technical-kicker"><i></i> Greenways · open foundations</p>
+            <h1>Open Source</h1>
+            <p>
+              Durable tools, open standards, and public infrastructure for anyone
+              building on the web.
+            </p>
+          </div>
 
-        <div class="hero-pagination" role="group" aria-label="Background scenes">
-          <button
-            type="button"
-            data-hero-slide="0"
-            aria-label="Show scene 1"
-            aria-pressed="true"
-          ></button>
-          <button
-            type="button"
-            data-hero-slide="1"
-            aria-label="Show scene 2"
-            aria-pressed="false"
-          ></button>
-          <button
-            type="button"
-            data-hero-slide="2"
-            aria-label="Show scene 3"
-            aria-pressed="false"
-          ></button>
+          <div class="hero-pagination" role="group" aria-label="Background scenes">
+            <button
+              type="button"
+              data-hero-slide="0"
+              aria-label="Show scene 1"
+              aria-pressed="true"
+            ></button>
+            <button
+              type="button"
+              data-hero-slide="1"
+              aria-label="Show scene 2"
+              aria-pressed="false"
+            ></button>
+            <button
+              type="button"
+              data-hero-slide="2"
+              aria-label="Show scene 3"
+              aria-pressed="false"
+            ></button>
+          </div>
+
+          <div
+            id="projects"
+            class="hero-launcher"
+            role="list"
+            aria-label="Greenways applications"
+          >
+            <a
+              href="https://www.hara-lang.org/"
+              target="_blank"
+              rel="noreferrer"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-hara-description"
+            >
+              <img src="https://www.hara-lang.org/favicon.svg" alt="" />
+              <span class="app-name">Hara</span>
+              <span class="app-description" id="app-hara-description">
+                A precise language and runtime for symbolic, portable systems.
+              </span>
+            </a>
+
+            <a
+              href="./hestia/"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-hestia-description"
+            >
+              <img src="./hestia/favicon.svg" alt="" />
+              <span class="app-name">Hestia</span>
+              <span class="app-description" id="app-hestia-description">
+                Signed identity, recovery, private rooms, and agent receipts.
+              </span>
+            </a>
+
+            <a
+              href="./hoplite/"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-hoplite-description"
+            >
+              <img src="./hoplite/favicon.svg" alt="" />
+              <span class="app-name">Hoplite</span>
+              <span class="app-description" id="app-hoplite-description">
+                A compact application server for building and deploying web services.
+              </span>
+            </a>
+
+            <a
+              href="./historia/"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-historia-description"
+            >
+              <img
+                src="./visual-language/sigils/mountain-pair.svg"
+                alt=""
+              />
+              <span class="app-name">Historia</span>
+              <span class="app-description" id="app-historia-description">
+                Git-native collection and retrieval for AI conversation history.
+              </span>
+            </a>
+
+            <a
+              href="./hodos/"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-hodos-description"
+            >
+              <img src="./hodos/favicon.svg" alt="" />
+              <span class="app-name">Hodos</span>
+              <span class="app-description" id="app-hodos-description">
+                A modular Hara kernel and browser-native code environment.
+              </span>
+            </a>
+
+            <a
+              href="https://github.com/greenways-ai/greenways-os"
+              target="_blank"
+              rel="noreferrer"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-greenways-os-description"
+            >
+              <img
+                src="./visual-language/sigils/peacock-eye-round.svg"
+                alt=""
+              />
+              <span class="app-name">Greenways OS</span>
+              <span class="app-description" id="app-greenways-os-description">
+                A sovereign-first local application launcher for the browser.
+              </span>
+            </a>
+
+            <a
+              href="./visual-language/"
+              role="listitem"
+              data-search-item
+              aria-describedby="app-visual-language-description"
+            >
+              <img
+                src="./visual-language/sigils/lotus-three.svg"
+                alt=""
+              />
+              <span class="app-name">Visual Language</span>
+              <span class="app-description" id="app-visual-language-description">
+                Shared mosaic marks, themes, components, and integrity checks.
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 
-      <section id="projects" class="component-section">
-        <header class="component-heading">
-          <p>01 · COMPONENT MATRIX</p>
-          <h2>Open foundations.<br />One shared system.</h2>
-        </header>
-
-        <p class="component-intro">
-          Greenways builds durable tools in public. The charter defines what
-          people can expect when a project carries the Greenways Open Source
-          signature.
-        </p>
-
-        <div class="project-launcher" role="list" aria-label="Greenways projects">
-          <a
-            href="./hestia/"
-            role="listitem"
-            data-search-item
-            aria-describedby="project-hestia-description"
-          >
-            <img src="./hestia/favicon.svg" alt="" />
-            <span class="project-name">Hestia</span>
-            <span
-              class="project-tooltip"
-              id="project-hestia-description"
-              role="tooltip"
-              >Signed identity, recovery, rooms, and agent accountability.</span
-            >
-          </a>
-          <a
-            href="./hoplite/"
-            role="listitem"
-            data-search-item
-            aria-describedby="project-hoplite-description"
-          >
-            <img src="./hoplite/favicon.svg" alt="" />
-            <span class="project-name">Hoplite</span>
-            <span
-              class="project-tooltip"
-              id="project-hoplite-description"
-              role="tooltip"
-              >A compact system for building and deploying web services.</span
-            >
-          </a>
-          <a
-            href="./historia/"
-            role="listitem"
-            data-search-item
-            aria-describedby="project-historia-description"
-          >
-            <img src="./historia/favicon.svg" alt="" />
-            <span class="project-name">Historia</span>
-            <span
-              class="project-tooltip"
-              id="project-historia-description"
-              role="tooltip"
-              >Git-native collection and retrieval for AI conversation history.</span
-            >
-          </a>
-          <a
-            href="./hodos/"
-            role="listitem"
-            data-search-item
-            aria-describedby="project-hodos-description"
-          >
-            <img src="./hodos/favicon.svg" alt="" />
-            <span class="project-name">Hodos</span>
-            <span
-              class="project-tooltip"
-              id="project-hodos-description"
-              role="tooltip"
-              >A modular Hara kernel and browser-native code environment.</span
-            >
-          </a>
-          <a
-            href="./visual-language/"
-            role="listitem"
-            data-search-item
-            aria-describedby="project-visual-language-description"
-          >
-            <img src="./visual-language/favicon.svg" alt="" />
-            <span class="project-name">Visual Language</span>
-            <span
-              class="project-tooltip"
-              id="project-visual-language-description"
-              role="tooltip"
-              >Shared mosaic marks, themes, components, and integrity checks.</span
-            >
-          </a>
-        </div>
-      </section>
-
-      <section id="charter" class="component-section component-section--charter">
-        <header class="component-heading">
-          <p>02 · OPEN SOURCE CHARTER</p>
+      <section id="charter" class="charter-section">
+        <header class="charter-heading">
+          <p class="technical-kicker"><i></i> 01 · Open Source Charter · 1.0</p>
           <h2>Public infrastructure.<br />Precisely stewarded.</h2>
+          <p>
+            Greenways builds durable tools in public. The charter defines what
+            people can expect when a project carries the Greenways Open Source
+            signature.
+          </p>
         </header>
 
         <div class="charter-layout">
@@ -314,6 +330,7 @@
                   never replaces or obscures it.
                 </p>
               </article>
+
               <article id="usable-freedom" data-search-item>
                 <small>02 · USABLE FREEDOM</small>
                 <h3>Open means useful beyond Greenways.</h3>
@@ -323,6 +340,7 @@
                   cannot be meaningfully used is not enough.
                 </p>
               </article>
+
               <article id="public-stewardship" data-search-item>
                 <small>03 · PUBLIC STEWARDSHIP</small>
                 <h3>Direction is explained, not merely announced.</h3>
@@ -333,6 +351,7 @@
                   inspectable.
                 </p>
               </article>
+
               <article id="interoperability" data-search-item>
                 <small>04 · INTEROPERABILITY</small>
                 <h3>Interfaces should outlive implementations.</h3>
@@ -343,6 +362,7 @@
                   branding alone.
                 </p>
               </article>
+
               <article id="contributors" data-search-item>
                 <small>05 · CONTRIBUTORS</small>
                 <h3>Contribution is public work with public credit.</h3>
@@ -353,6 +373,7 @@
                   retain visible credit for their work.
                 </p>
               </article>
+
               <article id="sustainability" data-search-item>
                 <small>06 · SUSTAINABILITY</small>
                 <h3>Open foundations can support a durable business.</h3>
@@ -362,6 +383,7 @@
                   rights already granted by a project’s open-source licence.
                 </p>
               </article>
+
               <article id="identity" data-search-item>
                 <small>07 · IDENTITY</small>
                 <h3>Code freedom and project identity are separate.</h3>
@@ -375,7 +397,7 @@
             </div>
 
             <section class="charter-definition" data-search-item>
-              <p class="kicker">THE SIGNATURE</p>
+              <p class="technical-kicker"><i></i> The signature</p>
               <h3>A Greenways Open Source Project</h3>
               <p>
                 This phrase means the project has public source, an explicit
@@ -391,7 +413,7 @@
     </main>
 
     <footer>
-      <span>Greenways OSS</span>
+      <span>Greenways Open Source</span>
       <span>Visual language v4.4.0 · Apache-2.0 where noted</span>
     </footer>
   </body>
