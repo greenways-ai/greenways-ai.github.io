@@ -4,7 +4,7 @@
   data-theme="light"
   data-theme-preference="auto"
   data-project="greenways"
-  data-visual-language="4.0.0"
+  data-visual-language="4.3.0"
 >
   <head>
     <meta charset="utf-8" />
@@ -14,8 +14,18 @@
       content="Open foundations from Greenways: precise tools for a world built to be explored."
     />
     <meta name="theme-color" content="#f4f2ec" />
+    <meta property="og:title" content="Greenways Open Source" />
+    <meta
+      property="og:description"
+      content="Open foundations from Greenways: precise tools for a world built to be explored."
+    />
+    <meta
+      property="og:image"
+      content="https://opensource.greenways.ai/visual-language/assets/og-greenways.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>Greenways Open Source</title>
-    <link rel="icon" href="./sigil.svg" type="image/svg+xml" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/theme.css" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="module" src="./assets/theme.js"></script>
@@ -25,50 +35,7 @@
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="gw-header" data-gw-header>
       <a class="gw-brand" href="./" aria-label="Greenways Open Source home">
-        <svg
-          class="gw-sigil gw-sigil--greenways"
-          viewBox="0 0 64 64"
-          role="img"
-          aria-label="Greenways sigil"
-        >
-          <defs>
-            <linearGradient
-              id="gw-glass-greenways"
-              x1="8"
-              y1="6"
-              x2="54"
-              y2="58"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop class="gw-glass__shadow" />
-              <stop offset=".42" class="gw-glass__body" />
-              <stop offset=".72" class="gw-glass__light" />
-              <stop offset="1" class="gw-glass__edge" />
-            </linearGradient>
-          </defs>
-          <rect
-            class="gw-sigil__ground"
-            x="1"
-            y="1"
-            width="62"
-            height="62"
-            rx="11"
-          />
-          <g class="gw-sigil__tiles">
-            <path d="M32 19C25 7 8 10 8 25c0 8 7 14 14 20l10-11Z" />
-            <path d="M32 19C39 7 56 10 56 25c0 8-7 14-14 20L32 34Z" />
-            <path d="M22 45 32 34v24Z" />
-            <path d="m42 45-10-11v24Z" />
-            <path
-              class="gw-sigil__eye"
-              d="M20 29c6-9 18-9 24 0-6 10-18 10-24 0Z"
-            />
-            <path
-              class="gw-sigil__pupil"
-              d="m32 23 6 6-6 7-6-7Z"
-            />
-          </g>
-        </svg>
+        <img class="gw-sigil" src="./sigil.svg" alt="Greenways sigil" />
         <span>Greenways <i>Open Source</i></span>
       </a>
       <button class="gw-search-trigger" type="button" data-search-open>
@@ -231,7 +198,7 @@
     </main>
     <footer>
       <span>Greenways open foundations</span>
-      <span>Visual language v4.0.0 · Apache-2.0 where noted</span>
+      <span>Visual language v4.3.0 · Apache-2.0 where noted</span>
     </footer>
   </body>
 </html>

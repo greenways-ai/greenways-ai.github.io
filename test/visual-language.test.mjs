@@ -88,20 +88,37 @@ test("the catalogue includes every published Greenways foundation", async () => 
   }
 });
 
-test("the header uses the canonical piece-cut glass Greenways sigil", async () => {
+test("the header uses the canonical v4 voronoi Greenways sigil", async () => {
   const html = await read("index.html");
-  assert.match(html, /gw-sigil--greenways/);
-  assert.match(html, /<linearGradient/);
-  assert.match(html, /id="gw-glass-greenways"/);
-  for (const stop of ["shadow", "body", "light", "edge"]) {
-    assert.match(html, new RegExp(`gw-glass__${stop}`));
-  }
-  assert.match(html, /M32 19C25 7 8 10/);
+  assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg" alt="Greenways sigil"/);
+  assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
+  assert.doesNotMatch(html, /gw-sigil--greenways|gw-greenways-tessera|gw-sigil__tessera|gw-glass/);
+  assert.match(html, /content="https:\/\/opensource\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/);
+  assert.match(html, /twitter:card" content="summary_large_image"/);
 
-  const favicon = await read("sigil.svg");
-  assert.match(favicon, /<linearGradient id="glass"/);
-  assert.match(favicon, /fill="url\(#glass\)"/);
-  assert.match(favicon, /stroke:var\(--grout\)/);
+  const sigil = await read("sigil.svg");
+  assert.match(sigil, /viewBox="0 0 480 480"/);
+  assert.match(sigil, /prefers-color-scheme:\s*dark/);
+  assert.match(sigil, /--g00:/);
+  assert.doesNotMatch(sigil, /--grout|<pattern id="mosaic"/);
+
+  const favicon = await read("favicon.svg");
+  assert.match(favicon, /viewBox="0 0 480 480"/);
+  assert.match(favicon, /prefers-color-scheme:\s*dark/);
+  assert.doesNotMatch(favicon, /--grout|<pattern id="mosaic"/);
+});
+
+test("the historian redirect page carries the v4 historian sigil and og card", async () => {
+  const html = await read("historian/index.html");
+  assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
+  assert.match(html, /content="https:\/\/opensource\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/);
+  const sigil = await read("historian/sigil.svg");
+  assert.match(sigil, /viewBox="0 0 480 480"/);
+  assert.match(sigil, /prefers-color-scheme:\s*dark/);
+  assert.doesNotMatch(sigil, /--grout|<pattern id="mosaic"/);
+  const favicon = await read("historian/favicon.svg");
+  assert.match(favicon, /viewBox="0 0 480 480"/);
+  assert.doesNotMatch(favicon, /--grout|<pattern id="mosaic"/);
 });
 
 test("page styles consume tokens without redefining the shared theme", async () => {
