@@ -3,7 +3,7 @@
 The static catalogue published at <https://opensource.greenways.ai/>.
 
 - Production: `https://opensource.greenways.ai/`
-- Hosting: Netlify, configured by `netlify.toml`
+- Hosting: GitHub Pages from the default branch, with the custom domain recorded in `CNAME`
 - Build: none; the repository is published directly
 
 ## Visual language contract
@@ -16,7 +16,7 @@ The pinned release is recorded in `visual-language.lock.json`. The following fil
 - `assets/theme.js` from `src/theme.js`
 - `sigil.svg` from `assets/favicons/greenways.svg`
 
-Page-specific CSS may consume `--gw-*` tokens, but it must not redefine the protected canvas, surface, text, line, control, artwork, or sigil tokens. The header uses the canonical tessellated Greenways sigil, and themed imagery uses the shared `gw-themed-artwork` primitive.
+Page-specific CSS may consume `--gw-*` tokens, but it must not redefine the protected canvas, surface, text, line, control, artwork, or sigil tokens. The header uses the canonical piece-cut glass Greenways sigil, and themed imagery uses the shared `gw-themed-artwork` primitive.
 
 Run the integrity suite before publishing:
 
@@ -24,7 +24,7 @@ Run the integrity suite before publishing:
 npm test
 ```
 
-The same suite runs on pull requests and pushes to `main` through `.github/workflows/visual-language.yml`. It verifies the pinned upstream blobs, adaptive light/dark/automatic modes, tessellated marks, token scoping, accessible contrast, reduced-motion support, and the absence of legacy mark dimensions.
+The same suite runs on pull requests and pushes to `main` through `.github/workflows/visual-language.yml`. It verifies the pinned upstream blobs, adaptive light/dark/automatic modes, the piece-cut glass mark, complete project navigation, token scoping, accessible contrast, reduced-motion support, and the absence of legacy mark dimensions.
 
 ## Updating the visual language
 

@@ -46,9 +46,13 @@ function contrast(a, b) {
   return (high + 0.05) / (low + 0.05);
 }
 
-test("vendored visual-language primitives match the pinned v3.0.1 blobs", async () => {
+test("vendored visual-language primitives match the pinned release", async () => {
   for (const [path, expected] of Object.entries(lock.files)) {
-    assert.equal(gitBlobSha(await read(path)), expected, `${path} drifted from ${lock.repository}@${lock.commit}`);
+    assert.equal(
+      gitBlobSha(await read(path)),
+      expected,
+      `${path} drifted from ${lock.repository}@${lock.commit}`,
+    );
   }
 });
 
@@ -56,7 +60,10 @@ test("the document declares the Greenways project and all three theme states", a
   const html = await read("index.html");
   assert.match(html, /data-project="greenways"/);
   assert.match(html, /data-theme-preference="auto"/);
-  assert.match(html, new RegExp(`data-visual-language="${lock.version.replaceAll(".", "\\.")}"`));
+  assert.match(
+    html,
+    new RegExp(`data-visual-language="${lock.version.replaceAll(".", "\\.")}"`),
+  );
   for (const theme of ["auto", "light", "dark"]) {
     assert.match(html, new RegExp(`data-theme-choice="${theme}"`));
   }
@@ -64,17 +71,37 @@ test("the document declares the Greenways project and all three theme states", a
   assert.match(html, /assets\/theme\.js/);
 });
 
-test("the header uses the canonical tessellated Greenways sigil", async () => {
+test("the catalogue includes every published Greenways foundation", async () => {
+  const html = await read("index.html");
+  assert.match(html, /Five foundations\./);
+  for (const project of ["hestia", "hoplite", "historia", "hodos", "visual-language"]) {
+    assert.match(
+      html,
+      new RegExp(`href="\\./${project}/"`),
+      `${project} is missing from navigation`,
+    );
+    assert.match(
+      html,
+      new RegExp(`data-project-card="${project}"`),
+      `${project} is missing from the collection`,
+    );
+  }
+});
+
+test("the header uses the canonical piece-cut glass Greenways sigil", async () => {
   const html = await read("index.html");
   assert.match(html, /gw-sigil--greenways/);
-  assert.match(html, /id="gw-greenways-tessera"/);
-  assert.match(html, /patternUnits="userSpaceOnUse"/);
-  for (const tessera of [1, 2, 3, 4]) {
-    assert.match(html, new RegExp(`gw-sigil__tessera--${tessera}`));
+  assert.match(html, /<linearGradient/);
+  assert.match(html, /id="gw-glass-greenways"/);
+  for (const stop of ["shadow", "body", "light", "edge"]) {
+    assert.match(html, new RegExp(`gw-glass__${stop}`));
   }
+  assert.match(html, /M32 19C25 7 8 10/);
+
   const favicon = await read("sigil.svg");
-  assert.match(favicon, /<pattern id="mosaic"/);
-  assert.match(favicon, /fill="var\(--grout\)"/);
+  assert.match(favicon, /<linearGradient id="glass"/);
+  assert.match(favicon, /fill="url\(#glass\)"/);
+  assert.match(favicon, /stroke:var\(--grout\)/);
 });
 
 test("page styles consume tokens without redefining the shared theme", async () => {
@@ -101,7 +128,11 @@ test("page styles consume tokens without redefining the shared theme", async () 
     "sigil-grout",
   ];
   for (const token of protectedTokens) {
-    assert.doesNotMatch(css, new RegExp(`--gw-${token}\\s*:`), `styles.css must not redefine --gw-${token}`);
+    assert.doesNotMatch(
+      css,
+      new RegExp(`--gw-${token}\\s*:`),
+      `styles.css must not redefine --gw-${token}`,
+    );
   }
   assert.doesNotMatch(css, /#030504|#0b100e|#111815/i, "legacy forced-black palette returned");
   assert.match(css, /background:\s*var\(--gw-canvas\)/);
@@ -128,7 +159,16 @@ test("essential canonical foreground/background pairs meet WCAG AA", () => {
   }
 });
 
-test("legacy mark dimensions and ungrouted systems are absent", async () => {
+test("project-card labels meet WCAG AA in both themes", () => {
+  for (const foreground of ["#8e2731", "#765b15", "#426fa6", "#1d5e4d", "#0b6b4f"]) {
+    assert.ok(contrast(foreground, "#fbfaf6") >= 4.5, `${foreground} on light surface`);
+  }
+  for (const foreground of ["#dc4b40", "#d7b64e", "#5b86b8", "#70c99a", "#33a878"]) {
+    assert.ok(contrast(foreground, "#0b1410") >= 4.5, `${foreground} on dark surface`);
+  }
+});
+
+test("legacy mark dimensions are absent", async () => {
   for (const file of await walk(rootPath)) {
     if (!/\.(css|html|js|mjs|svg)$/.test(file)) continue;
     const source = await readFile(file, "utf8");

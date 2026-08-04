@@ -4,7 +4,7 @@
   data-theme="light"
   data-theme-preference="auto"
   data-project="greenways"
-  data-visual-language="3.0.1"
+  data-visual-language="4.0.0"
 >
   <head>
     <meta charset="utf-8" />
@@ -32,46 +32,19 @@
           aria-label="Greenways sigil"
         >
           <defs>
-            <pattern
-              id="gw-greenways-tessera"
-              width="16"
-              height="16"
-              patternUnits="userSpaceOnUse"
+            <linearGradient
+              id="gw-glass-greenways"
+              x1="8"
+              y1="6"
+              x2="54"
+              y2="58"
+              gradientUnits="userSpaceOnUse"
             >
-              <rect class="gw-sigil__grout" width="16" height="16" />
-              <rect
-                class="gw-sigil__tessera--1"
-                x="1"
-                y="1"
-                width="6"
-                height="6"
-                rx=".7"
-              />
-              <rect
-                class="gw-sigil__tessera--2"
-                x="9"
-                y="1"
-                width="6"
-                height="6"
-                rx=".7"
-              />
-              <rect
-                class="gw-sigil__tessera--3"
-                x="1"
-                y="9"
-                width="6"
-                height="6"
-                rx=".7"
-              />
-              <rect
-                class="gw-sigil__tessera--4"
-                x="9"
-                y="9"
-                width="6"
-                height="6"
-                rx=".7"
-              />
-            </pattern>
+              <stop class="gw-glass__shadow" />
+              <stop offset=".42" class="gw-glass__body" />
+              <stop offset=".72" class="gw-glass__light" />
+              <stop offset="1" class="gw-glass__edge" />
+            </linearGradient>
           </defs>
           <rect
             class="gw-sigil__ground"
@@ -82,18 +55,17 @@
             rx="11"
           />
           <g class="gw-sigil__tiles">
-            <path d="M32 7 42 21 32 30 22 21Z" />
-            <path d="m44 22 13 8-13 9-10-7Z" />
-            <path d="m44 41 9 12-17-3-2-15Z" />
-            <path d="m30 35-2 15-17 3 9-12Z" />
-            <path d="M20 39 7 30l13-8 10 10Z" />
+            <path d="M32 19C25 7 8 10 8 25c0 8 7 14 14 20l10-11Z" />
+            <path d="M32 19C39 7 56 10 56 25c0 8-7 14-14 20L32 34Z" />
+            <path d="M22 45 32 34v24Z" />
+            <path d="m42 45-10-11v24Z" />
             <path
               class="gw-sigil__eye"
-              d="M20 31c6-9 18-9 24 0-6 10-18 10-24 0Z"
+              d="M20 29c6-9 18-9 24 0-6 10-18 10-24 0Z"
             />
             <path
               class="gw-sigil__pupil"
-              d="m32 25 6 6-6 7-6-7Z"
+              d="m32 23 6 6-6 7-6-7Z"
             />
           </g>
         </svg>
@@ -110,6 +82,7 @@
             <a href="./hestia/">Hestia</a>
             <a href="./hoplite/">Hoplite</a>
             <a href="./historia/">Historia</a>
+            <a href="./hodos/">Hodos</a>
             <a href="./visual-language/">Visual language</a>
           </div>
         </details>
@@ -183,6 +156,7 @@
         <a href="./hestia/">Hestia</a>
         <a href="./hoplite/">Hoplite</a>
         <a href="./historia/">Historia</a>
+        <a href="./hodos/">Hodos</a>
         <a href="./visual-language/">Visual language</a>
         <a href="https://github.com/greenways-ai">GitHub ↗</a>
       </nav>
@@ -204,7 +178,7 @@
       <section id="projects">
         <header class="section-head">
           <p class="kicker">THE COLLECTION</p>
-          <h2>Four foundations.<br />One exacting house.</h2>
+          <h2>Five foundations.<br />One exacting house.</h2>
         </header>
         <div class="projects">
           <a href="./hestia/" data-project-card="hestia">
@@ -234,12 +208,21 @@
             </p>
             <span>Enter Historia →</span>
           </a>
+          <a href="./hodos/" data-project-card="hodos">
+            <small>04 · MOTH GREEN</small>
+            <h3>Hodos</h3>
+            <p>
+              An open-world Hara kernel and browser-native editor where
+              repositories become explorable, editable worlds.
+            </p>
+            <span>Enter Hodos →</span>
+          </a>
           <a href="./visual-language/" data-project-card="visual-language">
-            <small>04 · VERDIGRIS SILVER</small>
+            <small>05 · VERDIGRIS SILVER</small>
             <h3>Visual language</h3>
             <p>
-              The canonical grouted tessera system, adaptive themes, and visual
-              integrity.
+              The canonical piece-cut glass mosaic system, adaptive themes, and
+              visual integrity.
             </p>
             <span>Enter the atelier →</span>
           </a>
@@ -248,7 +231,7 @@
     </main>
     <footer>
       <span>Greenways open foundations</span>
-      <span>Visual language v3.0.1 · Apache-2.0 where noted</span>
+      <span>Visual language v4.0.0 · Apache-2.0 where noted</span>
     </footer>
   </body>
 </html>
