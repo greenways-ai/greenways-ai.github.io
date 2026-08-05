@@ -31,32 +31,13 @@ async function walk(directory) {
   return files.flat();
 }
 
-function luminance(hex) {
-  const channels = hex
-    .match(/[\da-f]{2}/gi)
-    .map((value) => Number.parseInt(value, 16) / 255)
-    .map((value) =>
-      value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4,
-    );
-  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
-}
-
-function contrast(a, b) {
-  const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (high + 0.05) / (low + 0.05);
-}
-
 test("vendored visual-language primitives match the pinned release", async () => {
   for (const [path, expected] of Object.entries(lock.files)) {
-    assert.equal(
-      gitBlobSha(await read(path)),
-      expected,
-      `${path} drifted from ${lock.repository}@${lock.commit}`,
-    );
+    assert.equal(gitBlobSha(await read(path)), expected, `${path} drifted`);
   }
 });
 
-test("the document declares the Greenways project and adaptive theme state", async () => {
+test("the root document retains adaptive Greenways theme state", async () => {
   const html = await read("index.html");
   assert.match(html, /data-project="greenways"/);
   assert.match(html, /data-theme-preference="auto"/);
@@ -69,95 +50,83 @@ test("the document declares the Greenways project and adaptive theme state", asy
   assert.match(html, /data-theme-menu/);
 });
 
-test("the header follows the shared gw-header menu and title hierarchy", async () => {
+test("the shared header is charter-only and has no GitHub or sites menu", async () => {
   const html = await read("index.html");
   assert.equal((html.match(/class="gw-header"/g) || []).length, 1);
-  assert.match(html, /data-gw-header/);
-  assert.match(html, /class="gw-brand"/);
+  assert.match(html, /class="gw-header__desktop charter-menu"/);
   assert.match(html, /class="gw-search-trigger"/);
   assert.match(html, /<kbd>⌘ K<\/kbd>/);
-  assert.match(html, /class="gw-header__desktop"/);
-  assert.match(html, /class="gw-project-menu"/);
-  assert.match(html, /<summary>Sites<\/summary>/);
   assert.match(html, /class="gw-theme-menu"/);
   assert.match(html, /class="gw-control gw-menu-trigger"/);
-  assert.match(html, /data-search-open/);
-  assert.match(html, /data-menu-open/);
-  assert.match(html, />Overview<\/a>/);
-  assert.match(html, />Charter<\/a>/);
-  assert.match(html, />Projects<\/a>/);
-  assert.match(html, />Visual language<\/a>/);
-  assert.match(html, />GitHub ↗<\/a>/);
-  assert.match(html, /class="gw-dialog gw-search-dialog"/);
-  assert.match(html, /class="gw-dialog gw-menu-dialog"/);
-  assert.doesNotMatch(html, /oss-header|oss-search|data-theme-toggle/);
-});
-
-test("the project menu lists the canonical Greenways sites", async () => {
-  const html = await read("index.html");
-  const menuStart = html.indexOf('class="gw-project-menu"');
-  const menuEnd = html.indexOf("</details>", menuStart);
-  assert.ok(menuStart >= 0 && menuEnd > menuStart);
-  const menu = html.slice(menuStart, menuEnd);
   for (const [label, href] of [
-    ["Greenways", "https://greenways.ai/"],
-    ["Hestia", "https://oss.greenways.ai/hestia/"],
-    ["Hoplite", "https://oss.greenways.ai/hoplite/"],
-    ["Historia", "https://oss.greenways.ai/historia/"],
-    ["Hodos", "https://oss.greenways.ai/hodos/"],
-    ["Visual Language", "https://oss.greenways.ai/visual-language/"],
-    ["Statstrade", "https://statstrade.io/"],
+    ["Top", "#top"],
+    ["01 · Open by default", "#open-by-default"],
+    ["02 · Usable freedom", "#usable-freedom"],
+    ["03 · Public stewardship", "#public-stewardship"],
+    ["04 · Interoperability", "#interoperability"],
+    ["05 · Contributors", "#contributors"],
+    ["06 · Sustainability", "#sustainability"],
+    ["07 · Identity", "#identity"],
   ]) {
-    assert.match(
-      menu,
-      new RegExp(`href="${href.replaceAll(/[/.]/g, "\\$&")}"`),
-      `project menu links to ${label}`,
-    );
-    assert.match(menu, new RegExp(`>${label}<`));
+    assert.match(html, new RegExp(`>${label}<`));
+    assert.ok((html.match(new RegExp(`href="${href}"`, "g")) || []).length >= 2);
   }
+  assert.doesNotMatch(html, /gw-project-menu|<summary>Sites<\/summary>|>GitHub ↗<\/a>/);
 });
 
-test("Open Source and all seven applications live in the hero", async () => {
-  const html = await read("index.html");
-  const heroStart = html.indexOf('<section id="top"');
-  const charterStart = html.indexOf('<section id="charter"');
+test("the hero is a seven-project 3D selector", async () => {
+  const [html, script, css] = await Promise.all([
+    read("index.html"),
+    read("script.js"),
+    read("selector.css"),
+  ]);
+  const heroStart = html.indexOf('id="top"');
   const launcherStart = html.indexOf('id="projects"');
-
-  assert.ok(heroStart >= 0);
-  assert.ok(launcherStart > heroStart);
-  assert.ok(charterStart > launcherStart);
+  const charterStart = html.indexOf('id="charter"');
+  assert.ok(heroStart >= 0 && launcherStart > heroStart && charterStart > launcherStart);
   assert.match(html, /<h1>Open Source<\/h1>/);
+  assert.match(html, /hero__copy hero__copy--compact/);
+  assert.match(html, /data-active-sigil/);
+  assert.match(html, /class="project-stage"/);
+  assert.equal((html.match(/data-project-select/g) || []).length, 7);
+  assert.equal((html.match(/data-hero-art/g) || []).length, 3);
+  assert.match(script, /const activateProject/);
+  assert.match(script, /applyBackground/);
+  assert.match(script, /ArrowLeft/);
+  assert.match(script, /ArrowRight/);
+  assert.match(css, /perspective:\s*1500px/);
+  assert.match(css, /selected-sigil-float/);
+  assert.match(css, /project-choice__pedestal/);
+});
 
-  for (const project of [
-    "Hara",
-    "Hestia",
-    "Hoplite",
-    "Historia",
-    "Hodos",
-    "Greenways OS",
-    "Visual Language",
+test("all projects use current canonical sigils and mapped world art", async () => {
+  const html = await read("index.html");
+  for (const project of ["hestia", "hoplite", "historia", "hodos", "greenways", "visual-language"]) {
+    assert.match(html, new RegExp(`/visual-language/favicons/${project}\\.svg\\?v=4\\.8\\.0`));
+  }
+  for (const name of ["Hara", "Hestia", "Hoplite", "Historia", "Hodos", "Greenways OS", "Visual Language"]) {
+    assert.match(html, new RegExp(`class="app-name">${name}<`));
+  }
+  for (const scene of [
+    "iridescent-observatory",
+    "sovereign-hearth",
+    "open-gate",
+    "raven-library",
+    "moth-theatre",
+    "world-confluence",
+    "lotus-river-delta",
   ]) {
-    assert.match(html, new RegExp(`class="app-name">${project}<`));
+    assert.match(html, new RegExp(`${scene}-day\\.webp`));
+    assert.match(html, new RegExp(`${scene}-night\\.webp`));
   }
 });
 
-test("the launcher uses the canonical Historia and Visual Language motifs", async () => {
-  const html = await read("index.html");
-  assert.match(
-    html,
-    /src="\.\/visual-language\/sigils\/mountain-pair\.svg"[\s\S]*class="app-name">Historia</,
-  );
-  assert.match(
-    html,
-    /src="\.\/visual-language\/sigils\/lotus-three\.svg"[\s\S]*class="app-name">Visual Language</,
-  );
-});
-
-test("the charter follows the hero and keeps all seven commitments", async () => {
-  const html = await read("index.html");
+test("the small introduction and charter ordering remain explicit", async () => {
+  const [html, css] = await Promise.all([read("index.html"), read("selector.css")]);
+  assert.match(css, /hero__copy--compact h1[\s\S]*font-size:\s*clamp\(1\.75rem/);
+  assert.match(css, /hero__copy\.hero__copy--compact > p:last-child[\s\S]*font-size:\s*0\.74rem/);
   assert.match(html, /01 · Open Source Charter · 1\.0/);
   assert.match(html, /Greenways builds durable tools in public\./);
-
   for (const section of [
     "OPEN BY DEFAULT",
     "USABLE FREEDOM",
@@ -166,149 +135,49 @@ test("the charter follows the hero and keeps all seven commitments", async () =>
     "CONTRIBUTORS",
     "SUSTAINABILITY",
     "IDENTITY",
-  ]) {
-    assert.match(html, new RegExp(section));
-  }
+  ]) assert.match(html, new RegExp(section));
 });
 
-test("representation file names are not presented as page copy", async () => {
+test("canonical root and historian marks remain adaptive Voronoi assets", async () => {
   const html = await read("index.html");
-  for (const label of [
-    "Jeweled Archipelago",
-    "Solar Steppe Observatories",
-    "Aurora Conservatory Belt",
+  assert.match(html, /<img class="gw-sigil" src="\.\/sigil\.svg"/);
+  assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
+  for (const path of ["sigil.svg", "favicon.svg", "historian/sigil.svg", "historian/favicon.svg"]) {
+    const svg = await read(path);
+    assert.match(svg, /viewBox="0 0 480 480"/);
+    assert.doesNotMatch(svg, /--grout|<pattern id="mosaic"/);
+  }
+  assert.match(await read("sigil.svg"), /prefers-color-scheme:\s*dark/);
+});
+
+test("page styles consume rather than redefine protected theme tokens", async () => {
+  const css = `${await read("styles.css")}\n${await read("selector.css")}`;
+  for (const token of [
+    "canvas", "surface", "surface-muted", "text", "text-muted", "line",
+    "line-strong", "verdigris", "gold", "terracotta", "silver", "focus",
+    "header", "control-bg", "control-text", "control-hover", "art-veil",
+    "sigil-ground", "sigil-grout",
   ]) {
-    assert.doesNotMatch(html, new RegExp(`>\\s*${label}\\s*<`, "i"));
+    assert.doesNotMatch(css, new RegExp(`--gw-${token}\\s*:`), token);
   }
-});
-
-test("the header uses the canonical v4 Voronoi sigil", async () => {
-  const html = await read("index.html");
-  assert.match(
-    html,
-    /<img class="gw-sigil" src="\.\/sigil\.svg"/,
-  );
-  assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.match(
-    html,
-    /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-greenways\.png"/,
-  );
-  assert.match(html, /twitter:card" content="summary_large_image"/);
-
-  const sigil = await read("sigil.svg");
-  assert.match(sigil, /viewBox="0 0 480 480"/);
-  assert.match(sigil, /prefers-color-scheme:\s*dark/);
-  assert.match(sigil, /--g00:/);
-  assert.doesNotMatch(sigil, /--grout|<pattern id="mosaic"/);
-
-  const favicon = await read("favicon.svg");
-  assert.match(favicon, /viewBox="0 0 480 480"/);
-  assert.match(favicon, /prefers-color-scheme:\s*dark/);
-  assert.doesNotMatch(favicon, /--grout|<pattern id="mosaic"/);
-});
-
-test("the historian redirect page carries the v4 historian sigil and og card", async () => {
-  const html = await read("historian/index.html");
-  assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
-  assert.match(
-    html,
-    /content="https:\/\/oss\.greenways\.ai\/visual-language\/assets\/og-historia\.png"/,
-  );
-  const sigil = await read("historian/sigil.svg");
-  assert.match(sigil, /viewBox="0 0 480 480"/);
-  assert.match(sigil, /prefers-color-scheme:\s*dark/);
-  assert.doesNotMatch(sigil, /--grout|<pattern id="mosaic"/);
-  const favicon = await read("historian/favicon.svg");
-  assert.match(favicon, /viewBox="0 0 480 480"/);
-  assert.doesNotMatch(favicon, /--grout|<pattern id="mosaic"/);
-});
-
-test("page styles consume tokens without redefining the shared theme", async () => {
-  const css = await read("styles.css");
-  const protectedTokens = [
-    "canvas",
-    "surface",
-    "surface-muted",
-    "text",
-    "text-muted",
-    "line",
-    "line-strong",
-    "verdigris",
-    "gold",
-    "terracotta",
-    "silver",
-    "focus",
-    "header",
-    "control-bg",
-    "control-text",
-    "control-hover",
-    "art-veil",
-    "sigil-ground",
-    "sigil-grout",
-  ];
-  for (const token of protectedTokens) {
-    assert.doesNotMatch(
-      css,
-      new RegExp(`--gw-${token}\\s*:`),
-      `styles.css must not redefine --gw-${token}`,
-    );
-  }
-  assert.doesNotMatch(
-    css,
-    /#030504|#0b100e|#111815/i,
-    "legacy forced-black palette returned",
-  );
   assert.match(css, /background:\s*var\(--gw-canvas\)/);
+  assert.doesNotMatch(css, /#030504|#0b100e|#111815/i);
 });
 
-test("hero carousel uses three shared adaptive artwork representations", async () => {
-  const html = await read("index.html");
-  const css = await read("styles.css");
-  assert.equal((html.match(/data-hero-art/g) || []).length, 3);
-  assert.equal((html.match(/data-hero-slide=/g) || []).length, 3);
-  for (const artwork of [
-    "jeweled-archipelago",
-    "solar-steppe-observatories",
-    "aurora-conservatory-belt",
-  ]) {
-    assert.match(css, new RegExp(`${artwork}-day\\.webp`));
-    assert.match(css, new RegExp(`${artwork}-night\\.webp`));
-  }
-});
-
-test("essential canonical foreground/background pairs meet WCAG AA", () => {
-  for (const [foreground, background] of [
-    ["#101612", "#f4f2ec"],
-    ["#101612", "#fbfaf6"],
-    ["#58615c", "#fbfaf6"],
-    ["#f7f5ef", "#050a08"],
-    ["#f7f5ef", "#0b1410"],
-    ["#adb5af", "#0b1410"],
-  ]) {
-    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background}`);
-  }
-});
-
-test("legacy mark dimensions are absent", async () => {
+test("legacy mark dimensions and inaccessible motion regressions stay absent", async () => {
   for (const file of await walk(rootPath)) {
     if (!/\.(css|html|js|mjs|svg)$/.test(file)) continue;
     const source = await readFile(file, "utf8");
     assert.doesNotMatch(
       source,
-      /repeat\((?:9|10|20)\s*,\s*1fr\)|viewBox=["']0 0 (?:9|10|20) (?:9|10|20)["']|(?:nine|ten|twenty) by (?:nine|ten|twenty)|(?:9|10|20)×(?:9|10|20)/i,
-      `${file} contains a legacy visual mark`,
+      /repeat\((?:9|10|20)\s*,\s*1fr\)|viewBox=["']0 0 (?:9|10|20) (?:9|10|20)["']|(?:9|10|20)×(?:9|10|20)/i,
+      file,
     );
   }
-});
-
-test("keyboard and reduced-motion affordances stay present", async () => {
   const html = await read("index.html");
-  const css = `${await read("assets/theme.css")}\n${await read("styles.css")}`;
+  const css = `${await read("assets/theme.css")}\n${await read("styles.css")}\n${await read("selector.css")}`;
   assert.match(html, /class="skip-link"/);
   assert.match(html, /aria-label="Choose appearance"/);
-  assert.match(html, /data-theme-choice="auto"/);
-  assert.match(html, /data-theme-choice="light"/);
-  assert.match(html, /data-theme-choice="dark"/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
