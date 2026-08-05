@@ -15,7 +15,7 @@ The pinned release is recorded in `visual-language.lock.json`. The following fil
 - `assets/theme.css` from `src/theme.css`
 - `assets/theme.js` from `src/theme.js`
 - `sigil.svg` from `assets/favicons/greenways.svg` (detailed v4 Voronoi sigil, header/brand display)
-- `favicon.svg` from `assets/favicons/greenways-small.svg` (flat v4 variant, tab favicon)
+- `favicon.svg` reuses the full v4 Voronoi mosaic (a deliberate local deviation from upstream `greenways-small.svg`; the lock records the local blob)
 - `historian/sigil.svg` from `assets/favicons/historian.svg`
 - `historian/favicon.svg` from `assets/favicons/historian-small.svg`
 

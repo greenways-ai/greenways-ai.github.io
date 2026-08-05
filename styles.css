@@ -41,237 +41,24 @@ main {
   outline-offset: 3px;
 }
 
-.oss-header {
+/* Open Source extras on top of the shared gw-header styles in assets/theme.css. */
+
+.gw-header {
   position: sticky;
-  z-index: 60;
   top: 0;
-  min-height: 76px;
-  display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
-  align-items: center;
-  gap: clamp(8px, 1.4vw, 22px);
-  padding: 12px clamp(16px, 3vw, 46px);
-  color: var(--gw-text);
-  background: var(--gw-header);
-  border-block: 1px solid var(--gw-line);
-  backdrop-filter: blur(18px);
 }
 
-.oss-header__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: inherit;
-  font: 400 clamp(1.3rem, 2vw, 1.85rem) Marcellus, Georgia, serif;
-  letter-spacing: 0.075em;
-  text-decoration: none;
+.gw-search-results > p {
+  margin: 0;
+  color: var(--gw-text-muted);
 }
 
-.oss-header__sigil {
-  width: 48px;
-  height: 48px;
-  flex: none;
-}
-
-.oss-header__desktop {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: clamp(11px, 1.35vw, 21px);
-}
-
-.oss-header__desktop a,
-.oss-header__menu nav a {
-  color: inherit;
-  font: 700 0.67rem Manrope, system-ui, sans-serif;
-  letter-spacing: 0.075em;
-  text-decoration: none;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.oss-header__desktop a:hover,
-.oss-header__menu nav a:hover {
-  color: var(--gw-accent-3);
-}
-
-.oss-header__control {
-  width: 48px;
-  height: 48px;
-  display: inline-grid;
-  place-items: center;
-  padding: 0;
-  color: var(--gw-control-text);
-  background: var(--gw-control-bg);
-  border: 1px solid var(--gw-line-strong);
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.oss-header__control:hover {
-  background: var(--gw-control-hover);
-}
-
-.oss-header__control:focus-visible,
-.oss-header a:focus-visible,
 .hero-launcher a:focus-visible,
 .charter-index a:focus-visible,
 .hero-pagination button:focus-visible,
 footer a:focus-visible {
   outline: 3px solid var(--gw-focus);
   outline-offset: 3px;
-}
-
-.oss-header__control svg,
-.oss-search__bar svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.oss-header__moon {
-  display: block;
-  fill: currentColor !important;
-  stroke: none !important;
-}
-
-.oss-header__sun {
-  display: none;
-}
-
-:root[data-theme="dark"] .oss-header__moon {
-  display: none;
-}
-
-:root[data-theme="dark"] .oss-header__sun {
-  display: block;
-}
-
-.oss-header__menu {
-  position: relative;
-  display: none;
-}
-
-.oss-header__menu summary {
-  list-style: none;
-}
-
-.oss-header__menu summary::-webkit-details-marker {
-  display: none;
-}
-
-.oss-header__menu nav {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 220px;
-  display: grid;
-  padding: 8px;
-  background: var(--gw-surface);
-  border: 1px solid var(--gw-line-strong);
-  border-radius: 12px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
-}
-
-.oss-header__menu nav a {
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.oss-header__menu nav a:hover {
-  background: var(--gw-control-hover);
-}
-
-.oss-header__sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-}
-
-.oss-search {
-  width: min(calc(100% - 32px), 760px);
-  max-height: min(80svh, 720px);
-  padding: 0;
-  color: var(--gw-text);
-  background: var(--gw-surface);
-  border: 1px solid var(--gw-line-strong);
-  border-radius: 16px;
-  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.32);
-}
-
-.oss-search::backdrop {
-  background: rgba(2, 8, 6, 0.62);
-  backdrop-filter: blur(4px);
-}
-
-.oss-search__bar {
-  display: flex;
-  gap: 10px;
-  padding: 12px;
-  border-bottom: 1px solid var(--gw-line);
-}
-
-.oss-search__bar label {
-  min-width: 0;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  background: var(--gw-control-bg);
-  border: 1px solid var(--gw-line-strong);
-  border-radius: 10px;
-}
-
-.oss-search__bar input {
-  width: 100%;
-  min-height: 48px;
-  color: var(--gw-text);
-  background: transparent;
-  border: 0;
-  outline: 0;
-  font: inherit;
-}
-
-.oss-search__bar button {
-  width: auto;
-  padding-inline: 14px;
-}
-
-.oss-search__results {
-  display: grid;
-  gap: 8px;
-  padding: 12px;
-  overflow: auto;
-}
-
-.oss-search__results > p {
-  padding: 16px;
-  color: var(--gw-text-muted);
-}
-
-.oss-search__results a {
-  display: grid;
-  gap: 3px;
-  padding: 14px;
-  color: var(--gw-text);
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-.oss-search__results a:hover {
-  background: var(--gw-control-hover);
-}
-
-.oss-search__results span {
-  color: var(--gw-text-muted);
-  font-size: 0.85rem;
 }
 
 .hero {
@@ -649,14 +436,6 @@ footer {
 }
 
 @media (max-width: 1160px) {
-  .oss-header__desktop {
-    display: none;
-  }
-
-  .oss-header__menu {
-    display: block;
-  }
-
   .hero {
     min-height: auto;
   }
@@ -740,51 +519,6 @@ footer {
 }
 
 @media (max-width: 560px) {
-  .oss-header {
-    min-height: 68px;
-    padding: 9px 12px;
-    gap: 8px;
-  }
-
-  .oss-header__sigil {
-    width: 42px;
-    height: 42px;
-  }
-
-  .oss-header__brand span {
-    font-size: 1.05rem;
-  }
-
-  .oss-header__control {
-    width: 44px;
-    height: 44px;
-  }
-
-  .oss-header__menu nav {
-    position: fixed;
-    top: 68px;
-    right: 12px;
-  }
-
-  .oss-search__bar {
-    align-items: stretch;
-  }
-
-  .oss-search__bar label {
-    padding-inline: 10px;
-  }
-
-  .oss-search__bar button {
-    width: 58px;
-    overflow: hidden;
-    font-size: 0;
-  }
-
-  .oss-search__bar button::after {
-    content: "×";
-    font-size: 1.25rem;
-  }
-
   .charter-section,
   footer {
     width: min(100% - 24px, 1200px);

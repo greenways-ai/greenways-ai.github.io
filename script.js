@@ -1,60 +1,3 @@
-const installStandardOssHeader = () => {
-  const header = document.querySelector("[data-oss-header]");
-  if (!header) return;
-
-  header.innerHTML = `
-    <details class="oss-header__project-switcher">
-      <summary class="oss-header__control" aria-label="Switch Greenways project">
-        <img src="./sigil.svg" alt="" aria-hidden="true">
-      </summary>
-      <nav aria-label="Greenways projects">
-        <a href="./" aria-current="page">Open Source</a>
-        <a href="./hestia/">Hestia</a>
-        <a href="./hoplite/">Hoplite</a>
-        <a href="./historia/">Historia</a>
-        <a href="./hodos/">Hodos</a>
-        <a href="./visual-language/">Visual Language</a>
-      </nav>
-    </details>
-    <a class="oss-header__brand" href="./" aria-label="Greenways Open Source home">
-      <span>Open Source</span>
-    </a>
-    <span class="oss-header__spacer" aria-hidden="true"></span>
-    <a class="oss-header__docs" href="./open-source/">Docs</a>
-    <button class="oss-header__control" type="button" data-search-open aria-label="Search Greenways Open Source">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.25 4.25"></path></svg>
-    </button>
-    <button class="oss-header__control oss-header__theme" type="button" data-theme-toggle aria-label="Toggle colour theme" title="Toggle light or dark. Shift-click to follow the system theme.">
-      <span class="oss-header__sr">Toggle colour theme</span>
-      <svg class="oss-header__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.4 8.4 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"></path></svg>
-      <svg class="oss-header__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
-    </button>`;
-
-  const style = document.createElement("style");
-  style.textContent = `
-    .oss-header{grid-template-columns:auto auto 1fr auto auto auto!important}
-    .oss-header__spacer{min-width:1px}
-    .oss-header__docs{display:grid;place-items:center;align-self:stretch;padding:0 18px;border-left:1px solid var(--gw-line);font:700 10px var(--gw-font-mono);letter-spacing:.12em;text-decoration:none;text-transform:uppercase}
-    .oss-header__docs:hover{background:var(--gw-surface-raised);color:var(--gw-accent-2)}
-    .oss-header__project-switcher{position:relative;align-self:stretch;display:grid;place-items:center;border-right:1px solid var(--gw-line)}
-    .oss-header__project-switcher>summary{width:58px;height:100%;border:0!important;list-style:none}
-    .oss-header__project-switcher>summary::-webkit-details-marker{display:none}
-    .oss-header__project-switcher>summary img{width:38px;height:38px;display:block;object-fit:contain}
-    .oss-header__project-switcher>nav{position:absolute;z-index:120;top:calc(100% + 1px);left:0;min-width:230px;display:grid;padding:8px;background:var(--gw-surface);border:1px solid var(--gw-line-strong);box-shadow:0 24px 64px rgba(0,0,0,.2)}
-    .oss-header__project-switcher>nav a{padding:12px 13px;font:700 10px var(--gw-font-mono);letter-spacing:.09em;text-decoration:none;text-transform:uppercase}
-    .oss-header__project-switcher>nav a:hover,.oss-header__project-switcher>nav a[aria-current=page]{background:var(--gw-control-hover);color:var(--gw-accent-2)}
-    .oss-header__brand{border-right:0!important;padding-inline:18px!important}
-    @media(max-width:640px){.oss-header{grid-template-columns:auto auto 1fr auto auto!important}.oss-header__docs{display:none}.oss-header__project-switcher>summary{width:52px}.oss-header__brand{padding-inline:12px!important}}
-  `;
-  document.head.append(style);
-
-  header.querySelectorAll("details a").forEach((link) => {
-    link.addEventListener("click", () => link.closest("details")?.removeAttribute("open"));
-  });
-};
-
-installStandardOssHeader();
-
 const canonicalProjectIcons = new Map([
   ["Hestia", "./hestia/sigil.svg"],
   ["Hoplite", "./hoplite/sigil.svg"],
@@ -74,11 +17,6 @@ document.querySelector('link[rel="icon"]')?.setAttribute("href", "./sigil.svg");
 
 const root = document.documentElement;
 const themeColor = document.querySelector('meta[name="theme-color"]');
-const search = document.querySelector("[data-search-dialog]");
-const searchInput = search?.querySelector("[data-search-input]");
-const searchResults = search?.querySelector("[data-search-results]");
-const themeButtons = document.querySelectorAll("[data-theme-toggle]");
-
 const themeColors = { light: "#f4f2ec", dark: "#050a08" };
 
 const fallbackImageUrl = new URL("./sigil.svg", window.location.href).href;
@@ -93,80 +31,76 @@ const installImageFallback = (image) => {
 };
 
 document
-  .querySelectorAll(".oss-header img, .hero-launcher img")
+  .querySelectorAll(".gw-header img, .hero-launcher img")
   .forEach(installImageFallback);
 
-const renderTheme = () => {
-  const dark = root.dataset.theme === "dark";
-
-  themeButtons.forEach((button) => {
-    button.setAttribute(
-      "aria-label",
-      dark ? "Switch to light theme" : "Switch to dark theme",
-    );
-    button.setAttribute("aria-pressed", String(dark));
-  });
-
-  themeColor?.setAttribute("content", themeColors[dark ? "dark" : "light"]);
-};
-
-const fallbackApply = (preference) => {
-  const dark =
-    preference === "auto"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-      : preference === "dark";
-
-  root.dataset.theme = dark ? "dark" : "light";
-  root.dataset.themePreference = preference;
-  root.style.colorScheme = dark ? "dark" : "light";
-
-  try {
-    localStorage.setItem("gw-theme", preference);
-  } catch {
-    // Theme persistence is optional.
-  }
-
-  window.dispatchEvent(
-    new CustomEvent("gw-theme-change", {
-      detail: { preference, theme: dark ? "dark" : "light" },
-    }),
+const syncThemeColor = () => {
+  themeColor?.setAttribute(
+    "content",
+    themeColors[root.dataset.theme === "dark" ? "dark" : "light"],
   );
 };
 
-themeButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    const current = root.dataset.theme === "dark" ? "dark" : "light";
-    const next = event.shiftKey ? "auto" : current === "dark" ? "light" : "dark";
-    const theme = window.GreenwaysTheme;
+window.addEventListener("gw-theme-change", syncThemeColor);
+syncThemeColor();
 
-    if (theme?.apply) {
-      theme.apply(next, true);
-    } else {
-      fallbackApply(next);
-    }
+// Shared gw-header wiring: search and menu dialogs, ⌘K, and the appearance
+// menu, following the visual-language SharedHeader and ThemeMenu contracts.
 
-    renderTheme();
-  });
-});
+const header = document.querySelector("[data-gw-header]");
+const search = document.querySelector("[data-search-dialog]");
+const menu = document.querySelector("[data-menu-dialog]");
+const searchInput = search?.querySelector("[data-search-input]");
+const searchResults = search?.querySelector("[data-search-results]");
 
-window.addEventListener("gw-theme-change", renderTheme);
-renderTheme();
-
-const openSearch = () => {
-  if (!search) return;
-  search.showModal();
-  requestAnimationFrame(() => searchInput?.focus());
+const openDialog = (dialog) => {
+  if (!dialog) return;
+  dialog.showModal();
+  requestAnimationFrame(() =>
+    dialog.querySelector("input,button,a")?.focus(),
+  );
 };
 
-document
-  .querySelectorAll("[data-search-open]")
-  .forEach((button) => button.addEventListener("click", openSearch));
+header
+  ?.querySelector("[data-search-open]")
+  ?.addEventListener("click", () => openDialog(search));
+header
+  ?.querySelector("[data-menu-open]")
+  ?.addEventListener("click", () => openDialog(menu));
 
 window.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
     event.preventDefault();
-    openSearch();
+    openDialog(search);
   }
+});
+
+document.querySelectorAll("[data-theme-menu]").forEach((themeMenu) => {
+  const sync = () => {
+    const current = root.dataset.themePreference || "auto";
+    themeMenu.querySelectorAll("[data-theme-choice]").forEach((button) => {
+      button.setAttribute(
+        "aria-checked",
+        String(button.dataset.themeChoice === current),
+      );
+    });
+  };
+
+  themeMenu.querySelectorAll("[data-theme-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      window.GreenwaysTheme?.apply(button.dataset.themeChoice, true);
+      themeMenu.removeAttribute("open");
+    });
+  });
+
+  window.addEventListener("gw-theme-change", sync);
+  sync();
+});
+
+header?.querySelectorAll(".gw-project-menu a").forEach((link) => {
+  link.addEventListener("click", () =>
+    link.closest("details")?.removeAttribute("open"),
+  );
 });
 
 const searchable = [...document.querySelectorAll("[data-search-item]")].map(
@@ -186,8 +120,15 @@ const searchable = [...document.querySelectorAll("[data-search-item]")].map(
   },
 );
 
-searchInput?.addEventListener("input", () => {
-  const term = searchInput.value.trim().toLowerCase();
+// Search follows the shared header contract: pagefind when an index exists.
+// This site ships no pagefind index, so the local data-search-item index
+// keeps search working instead of degrading to "unavailable".
+
+let pagefind;
+let pagefindUnavailable = false;
+
+searchInput?.addEventListener("input", async () => {
+  const term = searchInput.value.trim();
   if (!searchResults) return;
 
   if (term.length < 2) {
@@ -195,8 +136,48 @@ searchInput?.addEventListener("input", () => {
     return;
   }
 
+  if (!pagefind && !pagefindUnavailable) {
+    try {
+      pagefind = await import("/pagefind/pagefind.js");
+    } catch {
+      pagefindUnavailable = true;
+    }
+  }
+
+  if (pagefind) {
+    try {
+      const found = await pagefind.search(term);
+      const entries = await Promise.all(
+        found.results.slice(0, 8).map((result) => result.data()),
+      );
+
+      searchResults.replaceChildren(
+        ...entries.map((entry) => {
+          const link = document.createElement("a");
+          const title = document.createElement("strong");
+          const excerpt = document.createElement("span");
+
+          link.href = entry.url;
+          title.textContent = entry.meta?.title || "Result";
+          excerpt.innerHTML = entry.excerpt || "";
+          link.append(title, excerpt);
+          return link;
+        }),
+      );
+
+      if (!entries.length) {
+        searchResults.innerHTML = "<p>No results found.</p>";
+      }
+      return;
+    } catch {
+      pagefind = undefined;
+      pagefindUnavailable = true;
+    }
+  }
+
+  const lowered = term.toLowerCase();
   const matches = searchable.filter((item) =>
-    `${item.title} ${item.excerpt}`.toLowerCase().includes(term),
+    `${item.title} ${item.excerpt}`.toLowerCase().includes(lowered),
   );
 
   searchResults.replaceChildren(

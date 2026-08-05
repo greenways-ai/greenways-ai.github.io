@@ -4,7 +4,7 @@
   data-theme="light"
   data-theme-preference="auto"
   data-project="greenways"
-  data-visual-language="4.4.0"
+  data-visual-language="4.6.1"
 >
   <head>
     <meta charset="utf-8" />
@@ -26,99 +26,89 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Open Source · Greenways</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./assets/theme.css?v=276633bf" />
-    <link rel="stylesheet" href="./styles.css?v=276633bf" />
-    <script type="module" src="./assets/theme.js?v=276633bf"></script>
-    <script type="module" src="./script.js?v=276633bf"></script>
+    <link rel="stylesheet" href="./assets/theme.css?v=a4c00dfb" />
+    <link rel="stylesheet" href="./styles.css?v=a4c00dfb" />
+    <script type="module" src="./assets/theme.js?v=a4c00dfb"></script>
+    <script type="module" src="./script.js?v=a4c00dfb"></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="oss-header" data-oss-header>
-      <a class="oss-header__brand" href="./" aria-label="Greenways Open Source home">
-        <img
-          class="oss-header__sigil"
-          src="./visual-language/sigils/heart-eye-peacock.svg"
-          alt=""
-          aria-hidden="true"
-        />
+    <header class="gw-header" data-gw-header>
+      <a class="gw-brand" href="./" aria-label="Greenways Open Source home">
+        <img class="gw-sigil" src="./sigil.svg" alt="" aria-hidden="true" />
         <span>Open Source</span>
       </a>
 
-      <nav class="oss-header__desktop" aria-label="Open Source">
+      <button class="gw-search-trigger" type="button" data-search-open>
+        <span aria-hidden="true">⌕</span>
+        <span>Search</span>
+        <kbd>⌘ K</kbd>
+      </button>
+
+      <nav class="gw-header__desktop" aria-label="Open Source">
         <a href="#top">Overview</a>
         <a href="#charter">Charter</a>
         <a href="#projects">Projects</a>
+        <a href="./open-source/">Docs</a>
         <a href="./visual-language/">Visual language</a>
+        <details class="gw-project-menu">
+          <summary>Sites</summary>
+          <div class="gw-popover">
+            <a href="https://greenways.ai/">Greenways</a>
+            <a href="https://oss.greenways.ai/hestia/">Hestia</a>
+            <a href="https://oss.greenways.ai/hoplite/">Hoplite</a>
+            <a href="https://oss.greenways.ai/historia/">Historia</a>
+            <a href="https://oss.greenways.ai/hodos/">Hodos</a>
+            <a href="https://oss.greenways.ai/visual-language/">Visual Language</a>
+            <a href="https://statstrade.io/">Statstrade</a>
+          </div>
+        </details>
         <a
           href="https://github.com/greenways-ai"
           target="_blank"
           rel="noreferrer"
+          aria-label="Open Source on GitHub"
         >GitHub ↗</a>
       </nav>
 
-      <button
-        class="oss-header__control"
-        type="button"
-        data-search-open
-        aria-label="Search Greenways Open Source"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.5"></circle>
-          <path d="m16 16 4.25 4.25"></path>
-        </svg>
-      </button>
-
-      <button
-        class="oss-header__control oss-header__theme"
-        type="button"
-        data-theme-toggle
-        aria-label="Toggle colour theme"
-        title="Toggle light or dark. Shift-click to follow the system theme."
-      >
-        <span class="oss-header__sr">Toggle colour theme</span>
-        <svg class="oss-header__moon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20 15.2A8.4 8.4 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"></path>
-        </svg>
-        <svg class="oss-header__sun" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
-        </svg>
-      </button>
-
-      <details class="oss-header__menu">
-        <summary class="oss-header__control" aria-label="Open navigation">
-          <span class="oss-header__sr">Menu</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 7h16M4 12h16M4 17h16"></path>
-          </svg>
+      <details class="gw-theme-menu" data-theme-menu>
+        <summary class="gw-control" aria-label="Choose appearance">
+          <span data-theme-icon>◐</span>
+          <span class="gw-control__label">Theme</span>
         </summary>
-        <nav aria-label="Compact Open Source navigation">
-          <a href="#top">Overview</a>
-          <a href="#charter">Charter</a>
-          <a href="#projects">Projects</a>
-          <a href="./visual-language/">Visual language</a>
-          <a
-            href="https://github.com/greenways-ai"
-            target="_blank"
-            rel="noreferrer"
-          >GitHub ↗</a>
-        </nav>
+        <div class="gw-popover gw-theme-menu__popover" role="menu" aria-label="Appearance">
+          <button type="button" role="menuitemradio" data-theme-choice="auto">
+            <span>Automatic</span>
+            <span aria-hidden="true" data-theme-check="auto">✓</span>
+          </button>
+          <button type="button" role="menuitemradio" data-theme-choice="light">
+            <span>Light</span>
+            <span aria-hidden="true" data-theme-check="light">✓</span>
+          </button>
+          <button type="button" role="menuitemradio" data-theme-choice="dark">
+            <span>Dark</span>
+            <span aria-hidden="true" data-theme-check="dark">✓</span>
+          </button>
+        </div>
       </details>
+
+      <button
+        class="gw-control gw-menu-trigger"
+        type="button"
+        data-menu-open
+        aria-label="Open navigation"
+      >☰</button>
     </header>
 
     <dialog
-      class="oss-search"
+      class="gw-dialog gw-search-dialog"
       data-search-dialog
       aria-label="Search Greenways Open Source"
     >
-      <form method="dialog" class="oss-search__bar">
+      <form method="dialog" class="gw-dialog__bar">
         <label>
-          <span class="oss-header__sr">Search Greenways Open Source</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.5"></circle>
-            <path d="m16 16 4.25 4.25"></path>
-          </svg>
+          <span>Search</span>
           <input
             type="search"
             data-search-input
@@ -126,11 +116,36 @@
             placeholder="Search Open Source"
           />
         </label>
-        <button class="oss-header__control" value="close">Close</button>
+        <button class="gw-control" value="close">Close</button>
       </form>
-      <div class="oss-search__results" data-search-results aria-live="polite">
+      <div class="gw-search-results" data-search-results aria-live="polite">
         <p>Begin typing to search this site.</p>
       </div>
+    </dialog>
+
+    <dialog class="gw-dialog gw-menu-dialog" data-menu-dialog aria-label="Navigation">
+      <form method="dialog">
+        <button class="gw-control" value="close">Close</button>
+      </form>
+      <nav>
+        <a href="#top">Overview</a>
+        <a href="#charter">Charter</a>
+        <a href="#projects">Projects</a>
+        <a href="./open-source/">Docs</a>
+        <a href="./visual-language/">Visual language</a>
+        <a href="https://greenways.ai/">Greenways</a>
+        <a href="https://oss.greenways.ai/hestia/">Hestia</a>
+        <a href="https://oss.greenways.ai/hoplite/">Hoplite</a>
+        <a href="https://oss.greenways.ai/historia/">Historia</a>
+        <a href="https://oss.greenways.ai/hodos/">Hodos</a>
+        <a href="https://oss.greenways.ai/visual-language/">Visual Language</a>
+        <a href="https://statstrade.io/">Statstrade</a>
+        <a
+          href="https://github.com/greenways-ai"
+          target="_blank"
+          rel="noreferrer"
+        >GitHub ↗</a>
+      </nav>
     </dialog>
 
     <main id="main-content">
@@ -414,7 +429,7 @@
 
     <footer>
       <span>Greenways Open Source</span>
-      <span>Visual language v4.4.0 · Apache-2.0 where noted</span>
+      <span>Visual language v4.6.1 · Apache-2.0 where noted</span>
     </footer>
   </body>
 </html>

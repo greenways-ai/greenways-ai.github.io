@@ -66,25 +66,55 @@ test("the document declares the Greenways project and adaptive theme state", asy
   );
   assert.match(html, /assets\/theme\.css/);
   assert.match(html, /assets\/theme\.js/);
-  assert.match(html, /data-theme-toggle/);
+  assert.match(html, /data-theme-menu/);
 });
 
-test("the header follows the Hoplite menu and title hierarchy", async () => {
+test("the header follows the shared gw-header menu and title hierarchy", async () => {
   const html = await read("index.html");
-  assert.match(html, /class="oss-header"/);
-  assert.match(html, /class="oss-header__brand"/);
-  assert.match(html, /class="oss-header__desktop"/);
-  assert.match(html, /class="oss-header__menu"/);
-  assert.match(html, /class="oss-header__control"/);
+  assert.equal((html.match(/class="gw-header"/g) || []).length, 1);
+  assert.match(html, /data-gw-header/);
+  assert.match(html, /class="gw-brand"/);
+  assert.match(html, /class="gw-search-trigger"/);
+  assert.match(html, /<kbd>⌘ K<\/kbd>/);
+  assert.match(html, /class="gw-header__desktop"/);
+  assert.match(html, /class="gw-project-menu"/);
+  assert.match(html, /<summary>Sites<\/summary>/);
+  assert.match(html, /class="gw-theme-menu"/);
+  assert.match(html, /class="gw-control gw-menu-trigger"/);
   assert.match(html, /data-search-open/);
-  assert.match(html, /data-theme-toggle/);
+  assert.match(html, /data-menu-open/);
   assert.match(html, />Overview<\/a>/);
   assert.match(html, />Charter<\/a>/);
   assert.match(html, />Projects<\/a>/);
   assert.match(html, />Visual language<\/a>/);
   assert.match(html, />GitHub ↗<\/a>/);
-  assert.doesNotMatch(html, /class="gw-theme-menu"/);
-  assert.doesNotMatch(html, /class="gw-dialog gw-menu-dialog"/);
+  assert.match(html, /class="gw-dialog gw-search-dialog"/);
+  assert.match(html, /class="gw-dialog gw-menu-dialog"/);
+  assert.doesNotMatch(html, /oss-header|oss-search|data-theme-toggle/);
+});
+
+test("the project menu lists the canonical Greenways sites", async () => {
+  const html = await read("index.html");
+  const menuStart = html.indexOf('class="gw-project-menu"');
+  const menuEnd = html.indexOf("</details>", menuStart);
+  assert.ok(menuStart >= 0 && menuEnd > menuStart);
+  const menu = html.slice(menuStart, menuEnd);
+  for (const [label, href] of [
+    ["Greenways", "https://greenways.ai/"],
+    ["Hestia", "https://oss.greenways.ai/hestia/"],
+    ["Hoplite", "https://oss.greenways.ai/hoplite/"],
+    ["Historia", "https://oss.greenways.ai/historia/"],
+    ["Hodos", "https://oss.greenways.ai/hodos/"],
+    ["Visual Language", "https://oss.greenways.ai/visual-language/"],
+    ["Statstrade", "https://statstrade.io/"],
+  ]) {
+    assert.match(
+      menu,
+      new RegExp(`href="${href.replaceAll(/[/.]/g, "\\$&")}"`),
+      `project menu links to ${label}`,
+    );
+    assert.match(menu, new RegExp(`>${label}<`));
+  }
 });
 
 test("Open Source and all seven applications live in the hero", async () => {
@@ -152,11 +182,11 @@ test("representation file names are not presented as page copy", async () => {
   }
 });
 
-test("the header uses the heart and peacock-eye mosaic mark", async () => {
+test("the header uses the canonical v4 Voronoi sigil", async () => {
   const html = await read("index.html");
   assert.match(
     html,
-    /<img[\s\S]*class="oss-header__sigil"[\s\S]*src="\.\/visual-language\/sigils\/heart-eye-peacock\.svg"/,
+    /<img class="gw-sigil" src="\.\/sigil\.svg"/,
   );
   assert.match(html, /<link rel="icon" href="\.\/favicon\.svg"/);
   assert.match(
@@ -275,8 +305,10 @@ test("keyboard and reduced-motion affordances stay present", async () => {
   const html = await read("index.html");
   const css = `${await read("assets/theme.css")}\n${await read("styles.css")}`;
   assert.match(html, /class="skip-link"/);
-  assert.match(html, /aria-label="Toggle colour theme"/);
-  assert.match(html, /title="Toggle light or dark\. Shift-click to follow the system theme\."/);
+  assert.match(html, /aria-label="Choose appearance"/);
+  assert.match(html, /data-theme-choice="auto"/);
+  assert.match(html, /data-theme-choice="light"/);
+  assert.match(html, /data-theme-choice="dark"/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
