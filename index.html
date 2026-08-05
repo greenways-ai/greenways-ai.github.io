@@ -27,9 +27,9 @@
     <title>Open Source · Greenways</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/theme.css?v=a4c00dfb" />
-    <link rel="stylesheet" href="./styles.css?v=a4c00dfb" />
+    <link rel="stylesheet" href="./styles.css?v=sigil-selector-20260805" />
     <script type="module" src="./assets/theme.js?v=a4c00dfb"></script>
-    <script type="module" src="./script.js?v=charter-menu-20260805"></script>
+    <script type="module" src="./script.js?v=sigil-selector-20260805"></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -46,30 +46,18 @@
         <kbd>⌘ K</kbd>
       </button>
 
-      <nav class="gw-header__desktop" aria-label="Open Source">
-        <a href="#top">Overview</a>
-        <a href="#charter">Charter</a>
-        <a href="#projects">Projects</a>
-        <a href="./open-source/">Docs</a>
-        <a href="./visual-language/">Visual language</a>
-        <details class="gw-project-menu">
-          <summary>Sites</summary>
-          <div class="gw-popover">
-            <a href="https://greenways.ai/">Greenways</a>
-            <a href="https://oss.greenways.ai/hestia/">Hestia</a>
-            <a href="https://oss.greenways.ai/hoplite/">Hoplite</a>
-            <a href="https://oss.greenways.ai/historia/">Historia</a>
-            <a href="https://oss.greenways.ai/hodos/">Hodos</a>
-            <a href="https://oss.greenways.ai/visual-language/">Visual Language</a>
-            <a href="https://statstrade.io/">Statstrade</a>
-          </div>
-        </details>
-        <a
-          href="https://github.com/greenways-ai"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open Source on GitHub"
-        >GitHub ↗</a>
+      <nav
+        class="gw-header__desktop charter-menu"
+        aria-label="Open Source Charter sections"
+      >
+        <a href="#top">Top</a>
+        <a href="#open-by-default">01 · Open by default</a>
+        <a href="#usable-freedom">02 · Usable freedom</a>
+        <a href="#public-stewardship">03 · Public stewardship</a>
+        <a href="#interoperability">04 · Interoperability</a>
+        <a href="#contributors">05 · Contributors</a>
+        <a href="#sustainability">06 · Sustainability</a>
+        <a href="#identity">07 · Identity</a>
       </nav>
 
       <details class="gw-theme-menu" data-theme-menu>
@@ -97,7 +85,7 @@
         class="gw-control gw-menu-trigger"
         type="button"
         data-menu-open
-        aria-label="Open navigation"
+        aria-label="Open charter navigation"
       >☰</button>
     </header>
 
@@ -144,7 +132,13 @@
     </dialog>
 
     <main id="main-content">
-      <section id="top" class="hero" data-hero>
+      <section
+        id="top"
+        class="hero hero-selector"
+        data-hero
+        data-active-project="hara"
+        style="--project-accent:#7ee2ef;--project-glow:rgba(126,226,239,.58)"
+      >
         <div
           class="hero-art hero-art--01 gw-themed-artwork is-active"
           data-hero-art
@@ -162,8 +156,8 @@
         ></div>
         <div class="hero__veil" aria-hidden="true"></div>
 
-        <div class="hero__shell">
-          <div class="hero__copy">
+        <div class="hero__shell hero__shell--selector">
+          <div class="hero__copy hero__copy--compact">
             <p class="technical-kicker"><i></i> Greenways · open foundations</p>
             <h1>Open Source</h1>
             <p>
@@ -172,136 +166,219 @@
             </p>
           </div>
 
-          <div class="hero-pagination" role="group" aria-label="Background scenes">
-            <button
-              type="button"
-              data-hero-slide="0"
-              aria-label="Show scene 1"
-              aria-pressed="true"
-            ></button>
-            <button
-              type="button"
-              data-hero-slide="1"
-              aria-label="Show scene 2"
-              aria-pressed="false"
-            ></button>
-            <button
-              type="button"
-              data-hero-slide="2"
-              aria-label="Show scene 3"
-              aria-pressed="false"
-            ></button>
-          </div>
+          <section class="project-stage" aria-label="Selected Greenways project">
+            <div class="project-stage__halo" aria-hidden="true"></div>
+            <div class="project-stage__specimen">
+              <img
+                data-active-sigil
+                src="https://www.hara-lang.org/favicon.svg"
+                alt="Hara sigil"
+              />
+            </div>
+            <div class="project-stage__meta" aria-live="polite">
+              <p data-active-index>01 / 07</p>
+              <h2 data-active-name>Hara</h2>
+              <p data-active-description>
+                A precise language and runtime for symbolic, portable systems.
+              </p>
+              <a data-active-link href="https://www.hara-lang.org/">Open Hara →</a>
+            </div>
+          </section>
 
           <div
             id="projects"
-            class="hero-launcher"
+            class="hero-launcher hero-launcher--selector"
             role="list"
-            aria-label="Greenways applications"
+            aria-label="Choose a Greenways project"
           >
-            <a
-              href="https://www.hara-lang.org/"
-              target="_blank"
-              rel="noreferrer"
+            <button
+              class="project-choice is-selected"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="hara"
+              data-name="Hara"
+              data-index="01"
+              data-href="https://www.hara-lang.org/"
+              data-icon="https://www.hara-lang.org/favicon.svg"
+              data-description="A precise language and runtime for symbolic, portable systems."
+              data-accent="#7ee2ef"
+              data-glow="rgba(126,226,239,.58)"
+              data-art-light="/visual-language/artwork/greenways/iridescent-observatory-day.webp"
+              data-art-dark="/visual-language/artwork/greenways/iridescent-observatory-night.webp"
+              data-art-light-mobile="/visual-language/artwork/greenways/iridescent-observatory-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/greenways/iridescent-observatory-night-mobile.webp"
               data-search-item
-              aria-describedby="app-hara-description"
+              aria-pressed="true"
             >
-              <img src="https://www.hara-lang.org/favicon.svg" alt="" />
+              <span class="project-choice__pedestal">
+                <img src="https://www.hara-lang.org/favicon.svg" alt="" />
+              </span>
               <span class="app-name">Hara</span>
-              <span class="app-description" id="app-hara-description">
-                A precise language and runtime for symbolic, portable systems.
-              </span>
-            </a>
+              <span class="app-description">A precise language and runtime for symbolic, portable systems.</span>
+            </button>
 
-            <a
-              href="./hestia/"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="hestia"
+              data-name="Hestia"
+              data-index="02"
+              data-href="./hestia/"
+              data-icon="/visual-language/favicons/hestia.svg?v=4.8.0"
+              data-description="Signed identity, recovery, private rooms, and agent receipts."
+              data-accent="#e66d42"
+              data-glow="rgba(230,109,66,.55)"
+              data-art-light="/visual-language/artwork/hestia/sovereign-hearth-day.webp"
+              data-art-dark="/visual-language/artwork/hestia/sovereign-hearth-night.webp"
+              data-art-light-mobile="/visual-language/artwork/hestia/sovereign-hearth-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/hestia/sovereign-hearth-night-mobile.webp"
               data-search-item
-              aria-describedby="app-hestia-description"
+              aria-pressed="false"
             >
-              <img src="./hestia/favicon.svg" alt="" />
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/hestia.svg?v=4.8.0" alt="" />
+              </span>
               <span class="app-name">Hestia</span>
-              <span class="app-description" id="app-hestia-description">
-                Signed identity, recovery, private rooms, and agent receipts.
-              </span>
-            </a>
+              <span class="app-description">Signed identity, recovery, private rooms, and agent receipts.</span>
+            </button>
 
-            <a
-              href="./hoplite/"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="hoplite"
+              data-name="Hoplite"
+              data-index="03"
+              data-href="./hoplite/"
+              data-icon="/visual-language/favicons/hoplite.svg?v=4.8.0"
+              data-description="A compact application server for building and deploying web services."
+              data-accent="#20c7df"
+              data-glow="rgba(32,199,223,.58)"
+              data-art-light="/visual-language/artwork/hoplite/open-gate-day.webp"
+              data-art-dark="/visual-language/artwork/hoplite/open-gate-night.webp"
+              data-art-light-mobile="/visual-language/artwork/hoplite/open-gate-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/hoplite/open-gate-night-mobile.webp"
               data-search-item
-              aria-describedby="app-hoplite-description"
+              aria-pressed="false"
             >
-              <img src="./hoplite/favicon.svg" alt="" />
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/hoplite.svg?v=4.8.0" alt="" />
+              </span>
               <span class="app-name">Hoplite</span>
-              <span class="app-description" id="app-hoplite-description">
-                A compact application server for building and deploying web services.
-              </span>
-            </a>
+              <span class="app-description">A compact application server for building and deploying web services.</span>
+            </button>
 
-            <a
-              href="./historia/"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="historia"
+              data-name="Historia"
+              data-index="04"
+              data-href="./historia/"
+              data-icon="/visual-language/favicons/historia.svg?v=4.8.0"
+              data-description="Git-native collection and retrieval for AI conversation history."
+              data-accent="#426fa6"
+              data-glow="rgba(66,111,166,.58)"
+              data-art-light="/visual-language/artwork/historia/raven-library-day.webp"
+              data-art-dark="/visual-language/artwork/historia/raven-library-night.webp"
+              data-art-light-mobile="/visual-language/artwork/historia/raven-library-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/historia/raven-library-night-mobile.webp"
               data-search-item
-              aria-describedby="app-historia-description"
+              aria-pressed="false"
             >
-              <img
-                src="./visual-language/sigils/mountain-pair.svg"
-                alt=""
-              />
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/historia.svg?v=4.8.0" alt="" />
+              </span>
               <span class="app-name">Historia</span>
-              <span class="app-description" id="app-historia-description">
-                Git-native collection and retrieval for AI conversation history.
-              </span>
-            </a>
+              <span class="app-description">Git-native collection and retrieval for AI conversation history.</span>
+            </button>
 
-            <a
-              href="./hodos/"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="hodos"
+              data-name="Hodos"
+              data-index="05"
+              data-href="./hodos/"
+              data-icon="/visual-language/favicons/hodos.svg?v=4.8.0"
+              data-description="A modular Hara kernel and browser-native code environment."
+              data-accent="#58a983"
+              data-glow="rgba(88,169,131,.58)"
+              data-art-light="/visual-language/artwork/hodos/moth-theatre-day.webp"
+              data-art-dark="/visual-language/artwork/hodos/moth-theatre-night.webp"
+              data-art-light-mobile="/visual-language/artwork/hodos/moth-theatre-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/hodos/moth-theatre-night-mobile.webp"
               data-search-item
-              aria-describedby="app-hodos-description"
+              aria-pressed="false"
             >
-              <img src="./hodos/favicon.svg" alt="" />
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/hodos.svg?v=4.8.0" alt="" />
+              </span>
               <span class="app-name">Hodos</span>
-              <span class="app-description" id="app-hodos-description">
-                A modular Hara kernel and browser-native code environment.
-              </span>
-            </a>
+              <span class="app-description">A modular Hara kernel and browser-native code environment.</span>
+            </button>
 
-            <a
-              href="https://github.com/greenways-ai/greenways-os"
-              target="_blank"
-              rel="noreferrer"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="greenways-os"
+              data-name="Greenways OS"
+              data-index="06"
+              data-href="https://github.com/greenways-ai/greenways-os"
+              data-icon="/visual-language/favicons/greenways.svg?v=4.8.0"
+              data-description="A sovereign-first local application launcher for the browser and home server."
+              data-accent="#61ad82"
+              data-glow="rgba(97,173,130,.58)"
+              data-art-light="/visual-language/artwork/www/world-confluence-day.webp"
+              data-art-dark="/visual-language/artwork/www/world-confluence-night.webp"
+              data-art-light-mobile="/visual-language/artwork/www/world-confluence-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/www/world-confluence-night-mobile.webp"
               data-search-item
-              aria-describedby="app-greenways-os-description"
+              aria-pressed="false"
             >
-              <img
-                src="./visual-language/sigils/peacock-eye-round.svg"
-                alt=""
-              />
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/greenways.svg?v=4.8.0" alt="" />
+              </span>
               <span class="app-name">Greenways OS</span>
-              <span class="app-description" id="app-greenways-os-description">
-                A sovereign-first local application launcher for the browser.
-              </span>
-            </a>
+              <span class="app-description">A sovereign-first local application launcher for the browser and home server.</span>
+            </button>
 
-            <a
-              href="./visual-language/"
+            <button
+              class="project-choice"
+              type="button"
               role="listitem"
+              data-project-select
+              data-project="visual-language"
+              data-name="Visual Language"
+              data-index="07"
+              data-href="./visual-language/"
+              data-icon="/visual-language/favicons/visual-language.svg?v=4.8.0"
+              data-description="Shared mosaic marks, themes, components, and visual-integrity rules."
+              data-accent="#9367c5"
+              data-glow="rgba(147,103,197,.62)"
+              data-art-light="/visual-language/artwork/www/lotus-river-delta-day.webp"
+              data-art-dark="/visual-language/artwork/www/lotus-river-delta-night.webp"
+              data-art-light-mobile="/visual-language/artwork/www/lotus-river-delta-day-mobile.webp"
+              data-art-dark-mobile="/visual-language/artwork/www/lotus-river-delta-night-mobile.webp"
               data-search-item
-              aria-describedby="app-visual-language-description"
+              aria-pressed="false"
             >
-              <img
-                src="./visual-language/sigils/lotus-three.svg"
-                alt=""
-              />
-              <span class="app-name">Visual Language</span>
-              <span class="app-description" id="app-visual-language-description">
-                Shared mosaic marks, themes, components, and integrity checks.
+              <span class="project-choice__pedestal">
+                <img src="/visual-language/favicons/visual-language.svg?v=4.8.0" alt="" />
               </span>
-            </a>
+              <span class="app-name">Visual Language</span>
+              <span class="app-description">Shared mosaic marks, themes, components, and visual-integrity rules.</span>
+            </button>
           </div>
         </div>
       </section>
@@ -424,7 +501,7 @@
 
     <footer>
       <span>Greenways Open Source</span>
-      <span>Visual language v4.6.1 · Apache-2.0 where noted</span>
+      <span>Canonical sigils · Visual Language 4.8.0</span>
     </footer>
   </body>
 </html>

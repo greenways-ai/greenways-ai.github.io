@@ -1,25 +1,15 @@
-const canonicalProjectIcons = new Map([
-  ["Hestia", "./hestia/sigil.svg"],
-  ["Hoplite", "./hoplite/sigil.svg"],
-  ["Historia", "./visual-language/favicons/historia.svg"],
-  ["Hodos", "./hodos/sigil.svg"],
-  ["Greenways OS", "./visual-language/favicons/greenways.svg"],
-  ["Visual Language", "./visual-language/favicons/visual-language.svg"],
-]);
-
-document.querySelectorAll(".hero-launcher a").forEach((card) => {
-  const name = card.querySelector(".app-name")?.textContent?.trim();
-  const source = canonicalProjectIcons.get(name);
-  if (source) card.querySelector("img")?.setAttribute("src", source);
-});
+const selectorStyles = document.createElement("link");
+selectorStyles.rel = "stylesheet";
+selectorStyles.href = "./selector.css?v=sigil-selector-20260805";
+document.head.append(selectorStyles);
 
 document.querySelector('link[rel="icon"]')?.setAttribute("href", "./sigil.svg");
 
 const root = document.documentElement;
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const themeColors = { light: "#f4f2ec", dark: "#050a08" };
-
 const fallbackImageUrl = new URL("./sigil.svg", window.location.href).href;
+
 const installImageFallback = (image) => {
   const useFallback = () => {
     if (image.src === fallbackImageUrl) return;
@@ -31,7 +21,7 @@ const installImageFallback = (image) => {
 };
 
 document
-  .querySelectorAll(".gw-header img, .hero-launcher img")
+  .querySelectorAll(".gw-header img, [data-active-sigil], .project-choice img")
   .forEach(installImageFallback);
 
 const syncThemeColor = () => {
@@ -44,46 +34,16 @@ const syncThemeColor = () => {
 window.addEventListener("gw-theme-change", syncThemeColor);
 syncThemeColor();
 
-// Shared gw-header wiring: search and menu dialogs, ⌘K, and the appearance
-// menu, following the visual-language SharedHeader and ThemeMenu contracts.
-
 const header = document.querySelector("[data-gw-header]");
 const search = document.querySelector("[data-search-dialog]");
 const menu = document.querySelector("[data-menu-dialog]");
 const searchInput = search?.querySelector("[data-search-input]");
 const searchResults = search?.querySelector("[data-search-results]");
 
-const compactCharterLinks = [
-  ["Top", "#top"],
-  ["01 · Open by default", "#open-by-default"],
-  ["02 · Usable freedom", "#usable-freedom"],
-  ["03 · Public stewardship", "#public-stewardship"],
-  ["04 · Interoperability", "#interoperability"],
-  ["05 · Contributors", "#contributors"],
-  ["06 · Sustainability", "#sustainability"],
-  ["07 · Identity", "#identity"],
-];
-
-const compactMenuNav = menu?.querySelector("nav");
-if (compactMenuNav) {
-  compactMenuNav.setAttribute("aria-label", "Open Source Charter sections");
-  compactMenuNav.replaceChildren(
-    ...compactCharterLinks.map(([label, href]) => {
-      const link = document.createElement("a");
-      link.href = href;
-      link.textContent = label;
-      link.addEventListener("click", () => menu.close());
-      return link;
-    }),
-  );
-}
-
 const openDialog = (dialog) => {
   if (!dialog) return;
   dialog.showModal();
-  requestAnimationFrame(() =>
-    dialog.querySelector("input,button,a")?.focus(),
-  );
+  requestAnimationFrame(() => dialog.querySelector("input,button,a")?.focus());
 };
 
 header
@@ -122,10 +82,8 @@ document.querySelectorAll("[data-theme-menu]").forEach((themeMenu) => {
   sync();
 });
 
-header?.querySelectorAll(".gw-project-menu a").forEach((link) => {
-  link.addEventListener("click", () =>
-    link.closest("details")?.removeAttribute("open"),
-  );
+menu?.querySelectorAll("nav a").forEach((link) => {
+  link.addEventListener("click", () => menu.close());
 });
 
 const searchable = [...document.querySelectorAll("[data-search-item]")].map(
@@ -135,19 +93,18 @@ const searchable = [...document.querySelectorAll("[data-search-item]")].map(
       node.querySelector("small")?.textContent?.trim() ||
       "Greenways Open Source";
     const excerpt =
-      node.querySelector(".app-description,p")?.textContent?.trim() || "";
+      node.dataset.description ||
+      node.querySelector(".app-description,p")?.textContent?.trim() ||
+      "";
     const href =
-      node instanceof HTMLAnchorElement
+      node.dataset.href ||
+      (node instanceof HTMLAnchorElement
         ? node.href
-        : `${window.location.pathname}#${node.id}`;
+        : `${window.location.pathname}#${node.id}`);
 
     return { href, title, excerpt };
   },
 );
-
-// Search follows the shared header contract: pagefind when an index exists.
-// This site ships no pagefind index, so the local data-search-item index
-// keeps search working instead of degrading to "unavailable".
 
 let pagefind;
 let pagefindUnavailable = false;
@@ -175,13 +132,11 @@ searchInput?.addEventListener("input", async () => {
       const entries = await Promise.all(
         found.results.slice(0, 8).map((result) => result.data()),
       );
-
       searchResults.replaceChildren(
         ...entries.map((entry) => {
           const link = document.createElement("a");
           const title = document.createElement("strong");
           const excerpt = document.createElement("span");
-
           link.href = entry.url;
           title.textContent = entry.meta?.title || "Result";
           excerpt.innerHTML = entry.excerpt || "";
@@ -189,10 +144,7 @@ searchInput?.addEventListener("input", async () => {
           return link;
         }),
       );
-
-      if (!entries.length) {
-        searchResults.innerHTML = "<p>No results found.</p>";
-      }
+      if (!entries.length) searchResults.innerHTML = "<p>No results found.</p>";
       return;
     } catch {
       pagefind = undefined;
@@ -204,13 +156,11 @@ searchInput?.addEventListener("input", async () => {
   const matches = searchable.filter((item) =>
     `${item.title} ${item.excerpt}`.toLowerCase().includes(lowered),
   );
-
   searchResults.replaceChildren(
     ...matches.map((item) => {
       const link = document.createElement("a");
       const title = document.createElement("strong");
       const excerpt = document.createElement("span");
-
       link.href = item.href;
       title.textContent = item.title;
       excerpt.textContent = item.excerpt;
@@ -218,57 +168,120 @@ searchInput?.addEventListener("input", async () => {
       return link;
     }),
   );
-
-  if (!matches.length) {
-    searchResults.innerHTML = "<p>No results found.</p>";
-  }
+  if (!matches.length) searchResults.innerHTML = "<p>No results found.</p>";
 });
 
 const hero = document.querySelector("[data-hero]");
-const heroSlides = [...document.querySelectorAll("[data-hero-art]")];
-const heroButtons = [...document.querySelectorAll("[data-hero-slide]")];
+const projectChoices = [...document.querySelectorAll("[data-project-select]")];
+const backgroundLayers = [...document.querySelectorAll("[data-hero-art]")];
+const activeSigil = document.querySelector("[data-active-sigil]");
+const activeIndex = document.querySelector("[data-active-index]");
+const activeName = document.querySelector("[data-active-name]");
+const activeDescription = document.querySelector("[data-active-description]");
+const activeLink = document.querySelector("[data-active-link]");
+const projectStage = document.querySelector(".project-stage");
+const mobileArtwork = window.matchMedia("(max-width: 760px)");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-let activeSlide = 0;
-let carouselTimer;
+let activeChoice = projectChoices[0];
+let backgroundCursor = 0;
+let stageTimer;
 
-const showSlide = (index) => {
-  if (!heroSlides.length) return;
+const artworkFor = (choice, mode) => {
+  const mobileKey = mode === "light" ? "artLightMobile" : "artDarkMobile";
+  const desktopKey = mode === "light" ? "artLight" : "artDark";
+  return mobileArtwork.matches && choice.dataset[mobileKey]
+    ? choice.dataset[mobileKey]
+    : choice.dataset[desktopKey];
+};
 
-  activeSlide = (index + heroSlides.length) % heroSlides.length;
-  heroSlides.forEach((slide, slideIndex) => {
-    slide.classList.toggle("is-active", slideIndex === activeSlide);
+const applyBackground = (choice, immediate = false) => {
+  if (!backgroundLayers.length) return;
+  const nextIndex = immediate
+    ? 0
+    : (backgroundCursor + 1) % backgroundLayers.length;
+  const nextLayer = backgroundLayers[nextIndex];
+  const light = artworkFor(choice, "light");
+  const dark = artworkFor(choice, "dark");
+  nextLayer.style.setProperty("--gw-art-light", `url("${light}")`);
+  nextLayer.style.setProperty("--gw-art-dark", `url("${dark}")`);
+  nextLayer.style.setProperty("--gw-art-light-position", "center");
+  nextLayer.style.setProperty("--gw-art-dark-position", "center");
+  requestAnimationFrame(() => {
+    backgroundLayers.forEach((layer) =>
+      layer.classList.toggle("is-active", layer === nextLayer),
+    );
   });
-  heroButtons.forEach((button, buttonIndex) => {
-    button.setAttribute("aria-pressed", String(buttonIndex === activeSlide));
+  backgroundCursor = nextIndex;
+};
+
+const setExternalLinkState = (link, href) => {
+  try {
+    const url = new URL(href, window.location.href);
+    const external = url.origin !== window.location.origin;
+    if (external) {
+      link.target = "_blank";
+      link.rel = "noreferrer";
+    } else {
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+    }
+  } catch {
+    link.removeAttribute("target");
+    link.removeAttribute("rel");
+  }
+};
+
+const activateProject = (choice, { immediate = false } = {}) => {
+  if (!choice) return;
+  activeChoice = choice;
+  const { project, name, index, href, icon, description, accent, glow } =
+    choice.dataset;
+
+  hero.dataset.activeProject = project;
+  hero.style.setProperty("--project-accent", accent);
+  hero.style.setProperty("--project-glow", glow);
+  projectChoices.forEach((item) => {
+    const selected = item === choice;
+    item.classList.toggle("is-selected", selected);
+    item.setAttribute("aria-pressed", String(selected));
   });
+
+  activeSigil.src = icon;
+  activeSigil.alt = `${name} sigil`;
+  activeIndex.textContent = `${index} / ${String(projectChoices.length).padStart(2, "0")}`;
+  activeName.textContent = name;
+  activeDescription.textContent = description;
+  activeLink.href = href;
+  activeLink.textContent = `Open ${name} →`;
+  setExternalLinkState(activeLink, href);
+  applyBackground(choice, immediate);
+
+  window.clearTimeout(stageTimer);
+  projectStage?.classList.remove("is-switching");
+  if (!reducedMotion.matches) {
+    requestAnimationFrame(() => projectStage?.classList.add("is-switching"));
+    stageTimer = window.setTimeout(
+      () => projectStage?.classList.remove("is-switching"),
+      420,
+    );
+  }
 };
 
-const stopCarousel = () => {
-  window.clearInterval(carouselTimer);
-  carouselTimer = undefined;
-};
-
-const startCarousel = () => {
-  stopCarousel();
-  if (reducedMotion.matches || heroSlides.length < 2) return;
-
-  carouselTimer = window.setInterval(() => {
-    showSlide(activeSlide + 1);
-  }, 9000);
-};
-
-heroButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    showSlide(Number(button.dataset.heroSlide));
-    startCarousel();
+projectChoices.forEach((choice, choiceIndex) => {
+  choice.addEventListener("pointerenter", () => activateProject(choice));
+  choice.addEventListener("focus", () => activateProject(choice));
+  choice.addEventListener("click", () => activateProject(choice));
+  choice.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    let nextIndex = choiceIndex;
+    if (event.key === "ArrowLeft") nextIndex = (choiceIndex - 1 + projectChoices.length) % projectChoices.length;
+    if (event.key === "ArrowRight") nextIndex = (choiceIndex + 1) % projectChoices.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = projectChoices.length - 1;
+    projectChoices[nextIndex].focus();
   });
 });
 
-hero?.addEventListener("mouseenter", stopCarousel);
-hero?.addEventListener("mouseleave", startCarousel);
-hero?.addEventListener("focusin", stopCarousel);
-hero?.addEventListener("focusout", startCarousel);
-reducedMotion.addEventListener?.("change", startCarousel);
-
-showSlide(0);
-startCarousel();
+mobileArtwork.addEventListener?.("change", () => applyBackground(activeChoice, true));
+activateProject(activeChoice, { immediate: true });
