@@ -53,6 +53,31 @@ const menu = document.querySelector("[data-menu-dialog]");
 const searchInput = search?.querySelector("[data-search-input]");
 const searchResults = search?.querySelector("[data-search-results]");
 
+const compactCharterLinks = [
+  ["Top", "#top"],
+  ["01 · Open by default", "#open-by-default"],
+  ["02 · Usable freedom", "#usable-freedom"],
+  ["03 · Public stewardship", "#public-stewardship"],
+  ["04 · Interoperability", "#interoperability"],
+  ["05 · Contributors", "#contributors"],
+  ["06 · Sustainability", "#sustainability"],
+  ["07 · Identity", "#identity"],
+];
+
+const compactMenuNav = menu?.querySelector("nav");
+if (compactMenuNav) {
+  compactMenuNav.setAttribute("aria-label", "Open Source Charter sections");
+  compactMenuNav.replaceChildren(
+    ...compactCharterLinks.map(([label, href]) => {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      link.addEventListener("click", () => menu.close());
+      return link;
+    }),
+  );
+}
+
 const openDialog = (dialog) => {
   if (!dialog) return;
   dialog.showModal();
