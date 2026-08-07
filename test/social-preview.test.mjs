@@ -65,7 +65,7 @@ for (const page of pages) {
     requireMeta(tags, "name", "twitter:image:alt", alt);
 
     const canonicals = [...head.matchAll(/<link\b[^>]*>/gi)]
-      .map(attributes)
+      .map((match) => attributes(match[0]))
       .filter((attrs) => attrs.rel === "canonical");
     assert.deepEqual(canonicals, [{ rel: "canonical", href: page.canonical }]);
 
