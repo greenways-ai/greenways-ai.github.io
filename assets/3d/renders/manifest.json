@@ -2,7 +2,7 @@
   "protocol": "greenways.logo-render-manifest/1",
   "renderer": {
     "blender": "Blender 4.0.2",
-    "cameraPreset": "isometric-front/v1",
+    "cameraPreset": "isometric-front/v2",
     "samples": 64,
     "size": 1600,
     "transparent": true,
@@ -14,55 +14,55 @@
       "sourceBytes": 61698152,
       "sourceSha256": "8e267a5d1eeeeec05e5fefb74afca9dac6db2a36a9da67d4582cbeb86c3b62b0",
       "png": "assets/3d/renders/greenways-3d-logo.png",
-      "pngBytes": 3573017,
-      "pngSha256": "ffa197ec84a0ea134f4076c68d27db8a00e13dcb3101d25de287024523c727e7",
+      "pngBytes": 2186543,
+      "pngSha256": "2f7880003b8fac8a6e5c6a4ef381f5028184ef487c9b0872e3fd9fd76ef861aa",
       "webp": "assets/3d/renders/greenways-3d-logo.webp",
-      "webpBytes": 283610,
-      "webpSha256": "637555ab069c00eb48b7f736822ca61405f696cd4415daa42ca7aba5051876eb"
+      "webpBytes": 130934,
+      "webpSha256": "4bad32bca118cf7cd6caa8ca3d1bcd6ca5cc4663de82ad437c4625c2653ad3a6"
     },
     {
       "source": "assets/3d/greenways-os-logo.glb",
       "sourceBytes": 60512588,
       "sourceSha256": "e363a61dc0b40749dae3cc66f331f35a28137a1232e54e14fc366bfec7eefcba",
       "png": "assets/3d/renders/greenways-os-logo.png",
-      "pngBytes": 3296931,
-      "pngSha256": "b6dc92dc71016740178a692032a3a7e975bb933b4e4e7918fddea6281efe1ae9",
+      "pngBytes": 2004639,
+      "pngSha256": "1622b07da1d6331fffac02992623e88d30d53f291c9e33e86198f797c7b549e8",
       "webp": "assets/3d/renders/greenways-os-logo.webp",
-      "webpBytes": 211514,
-      "webpSha256": "7e03d18f07923039ab6c9129cc2c08cafb39332ed1e2ca560d9f2a21298d1623"
+      "webpBytes": 99472,
+      "webpSha256": "ef92f47b496024aa9d9da9b266f6bbcbbe0a7c5f2c3c5bf1c5b41ad374ddb097"
     },
     {
       "source": "assets/3d/hestia-logo.glb",
       "sourceBytes": 62549112,
       "sourceSha256": "7a9a387ef1f4b984b0edb755446e65959102962f5222cd4c7d8258802f353bb4",
       "png": "assets/3d/renders/hestia-logo.png",
-      "pngBytes": 3511284,
-      "pngSha256": "8d55f1c7f2648df2dcfe6eaa99dc4c31f379927082b66dd60bcc0d97e135a7af",
+      "pngBytes": 2370627,
+      "pngSha256": "588a495a776bf73d676764c0e67ff4e21d9c70c4e5e0ef7a5d94414fb953ae60",
       "webp": "assets/3d/renders/hestia-logo.webp",
-      "webpBytes": 368720,
-      "webpSha256": "37f68683d9ea4dfef168ef9f2a9fc8b383b6226542db0954889cc1cb423f4274"
+      "webpBytes": 198902,
+      "webpSha256": "93224e7a68b36313a8087cb921d81270c4a18a20e7c3a97354264e4e6c5df257"
     },
     {
       "source": "assets/3d/historia-3d-logo.glb",
       "sourceBytes": 61123424,
       "sourceSha256": "666830541e669568d96092cdce3c1e4c0d550f07f0501b2af02833012709a600",
       "png": "assets/3d/renders/historia-3d-logo.png",
-      "pngBytes": 3394466,
-      "pngSha256": "04c71af518f78acf596bb7db41e45cd553bae94990279c6792b6dc06608e2236",
+      "pngBytes": 2414066,
+      "pngSha256": "7d9cf8814c38a9445437714a4ba48df70bef78a5c112d4956d71f4d318859c4c",
       "webp": "assets/3d/renders/historia-3d-logo.webp",
-      "webpBytes": 270732,
-      "webpSha256": "4d50baa10da6793be18805c22747394e8e5604bdfa803ef9afb344cc65674cc2"
+      "webpBytes": 158326,
+      "webpSha256": "f2441a96fd1b2aa373ae969cee2e3a2649135791d5ba7fe716ccd6f5761d7a87"
     },
     {
       "source": "assets/3d/hodos-3d-logo.glb",
       "sourceBytes": 63892924,
       "sourceSha256": "b2ce35c0af0e7bb0196fc5033caffa76423e5f0ddf2d03ad2d51c0331f5ce9d4",
       "png": "assets/3d/renders/hodos-3d-logo.png",
-      "pngBytes": 3075780,
-      "pngSha256": "b03fe71a995bc586e9a5e670d29a46c4e03df58f61cdb5d841bd47fbfbf25d35",
+      "pngBytes": 2271469,
+      "pngSha256": "8116a89ffcd0dbcbfa2931c30341436aabe6ed19fabe3a6a1c60dff8052c0301",
       "webp": "assets/3d/renders/hodos-3d-logo.webp",
-      "webpBytes": 257322,
-      "webpSha256": "9b971c5844a6a8f833ac8fbe4b05a7823a83fd5c6eaa4b749fb765dce95e8a29"
+      "webpBytes": 155218,
+      "webpSha256": "55fe08623b30923584ccdfb14b512ecdb9c71770c6fbf4974ed5a87cd2d8b179"
     }
   ]
 }
