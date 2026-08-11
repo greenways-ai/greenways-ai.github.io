@@ -29,24 +29,42 @@ npm test
 
 The same suite runs on pull requests and pushes to `main` through `.github/workflows/visual-language.yml`. It verifies the pinned upstream blobs, adaptive light/dark/automatic modes, the v4 sigil and favicon assets, complete project navigation, token scoping, accessible contrast, reduced-motion support, and the absence of legacy mark dimensions.
 
-## Web 3D models
+## Web 3D models and logo images
 
-Full-resolution GLB sources live in `assets/3d`. Generate lightweight selector
-and detail variants with:
+The full-resolution Pages copies of the GLB logos live in `assets/3d`. The canonical source archive is mirrored under `greenways-ai/workspace/assets/3d/source` through Git LFS. This repository keeps ordinary Git copies because GitHub Pages must be able to serve the files directly.
+
+Generate consistently framed, transparent square logo images from every top-level GLB with Blender and `cwebp`:
+
+```sh
+# macOS
+brew install --cask blender
+brew install webp
+
+npm run logos:render
+npm run logos:check
+```
+
+The renderer writes 1600 × 1600 PNG and WebP files plus a source/output SHA-256 manifest to `assets/3d/renders`. Override the size, sample count, output directory, or input set with:
+
+```sh
+npm run logos:render -- assets/3d/hodos-3d-logo.glb --size 2048 --samples 96
+```
+
+`.github/workflows/render-logo-images.yml` reruns the renderer when a GLB or rendering contract changes and commits the updated derivatives to the source branch. Do not hand-edit files in `assets/3d/renders`.
+
+Generate lightweight selector and detail GLB variants with:
 
 ```sh
 npm run models:optimize -- assets/3d/greenways-3d-logo.glb
 ```
 
-Generated variants are written to `assets/3d/web`. Build only one preset or
-choose another output directory with:
+Generated model variants are written to `assets/3d/web`. Build only one preset or choose another output directory with:
 
 ```sh
 npm run models:optimize -- path/to/model.glb --preset selector --output-dir path/to/output
 ```
 
-Both presets use Meshopt geometry compression and WebP textures. Consumers must
-configure their glTF loader for `KHR_meshopt_compression`.
+Both presets use Meshopt geometry compression and WebP textures. Consumers must configure their glTF loader for `KHR_meshopt_compression`.
 
 ## Updating the visual language
 

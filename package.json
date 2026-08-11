@@ -6,6 +6,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "fix:og": "node scripts/apply-social-preview-contract.mjs",
+    "logos:check": "node scripts/check-logo-renders.mjs",
+    "logos:render": "node scripts/render-logo-images.mjs",
     "models:optimize": "node scripts/optimize-model.mjs",
     "test": "node --test test/*.test.mjs"
   },

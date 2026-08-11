@@ -1,0 +1,51 @@
+name: Prepare final logo framing report
+
+on:
+  push:
+    branches: [agent/render-glb-logo-images]
+    paths:
+      - .github/workflows/preview-logo-renders.yml
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect rendered alpha bounds
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes python3-pil
+          mkdir -p .preview-logo-renders
+          python3 - <<'PY' > .preview-logo-renders/final-inspection.txt
+          from pathlib import Path
+          from PIL import Image
+
+          for source in sorted(Path("assets/3d/renders").glob("*.png")):
+              image = Image.open(source).convert("RGBA")
+              width, height = image.size
+              alpha = image.getchannel("A")
+              bbox = alpha.getbbox()
+              if bbox is None:
+                  raise SystemExit(f"blank render: {source}")
+              left, top, right, bottom = bbox
+              margins = (left, top, width - right, height - bottom)
+              edge = max(
+                  alpha.crop((0, 0, width, 1)).getextrema()[1],
+                  alpha.crop((0, height - 1, width, height)).getextrema()[1],
+                  alpha.crop((0, 0, 1, height)).getextrema()[1],
+                  alpha.crop((width - 1, 0, width, height)).getextrema()[1],
+              )
+              print(f"{source.name}: size={width}x{height} bbox={bbox} margins={margins} edge_alpha={edge}")
+              if edge != 0 or min(margins) < round(min(width, height) * 0.05):
+                  raise SystemExit(f"unsafe framing: {source}")
+          PY
+          git add .preview-logo-renders/final-inspection.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Stage final logo framing report"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
