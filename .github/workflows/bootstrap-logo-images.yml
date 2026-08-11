@@ -40,8 +40,10 @@ jobs:
       - name: Install renderer
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes blender python3-numpy webp
+          sudo apt-get install --no-install-recommends --yes blender libegl1 libegl-mesa0 libgl1-mesa-dri python3-numpy webp
       - name: Render and verify logo images
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
         run: |
           npm run logos:render
           npm run logos:check
