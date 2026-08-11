@@ -1,0 +1,68 @@
+{
+  "protocol": "greenways.logo-render-manifest/1",
+  "renderer": {
+    "blender": "Blender 4.0.2",
+    "cameraPreset": "isometric-front/v1",
+    "samples": 64,
+    "size": 1600,
+    "transparent": true,
+    "webpQuality": 90
+  },
+  "assets": [
+    {
+      "source": "assets/3d/greenways-3d-logo.glb",
+      "sourceBytes": 61698152,
+      "sourceSha256": "8e267a5d1eeeeec05e5fefb74afca9dac6db2a36a9da67d4582cbeb86c3b62b0",
+      "png": "assets/3d/renders/greenways-3d-logo.png",
+      "pngBytes": 3573017,
+      "pngSha256": "ffa197ec84a0ea134f4076c68d27db8a00e13dcb3101d25de287024523c727e7",
+      "webp": "assets/3d/renders/greenways-3d-logo.webp",
+      "webpBytes": 283610,
+      "webpSha256": "637555ab069c00eb48b7f736822ca61405f696cd4415daa42ca7aba5051876eb"
+    },
+    {
+      "source": "assets/3d/greenways-os-logo.glb",
+      "sourceBytes": 60512588,
+      "sourceSha256": "e363a61dc0b40749dae3cc66f331f35a28137a1232e54e14fc366bfec7eefcba",
+      "png": "assets/3d/renders/greenways-os-logo.png",
+      "pngBytes": 3296931,
+      "pngSha256": "b6dc92dc71016740178a692032a3a7e975bb933b4e4e7918fddea6281efe1ae9",
+      "webp": "assets/3d/renders/greenways-os-logo.webp",
+      "webpBytes": 211514,
+      "webpSha256": "7e03d18f07923039ab6c9129cc2c08cafb39332ed1e2ca560d9f2a21298d1623"
+    },
+    {
+      "source": "assets/3d/hestia-logo.glb",
+      "sourceBytes": 62549112,
+      "sourceSha256": "7a9a387ef1f4b984b0edb755446e65959102962f5222cd4c7d8258802f353bb4",
+      "png": "assets/3d/renders/hestia-logo.png",
+      "pngBytes": 3511284,
+      "pngSha256": "8d55f1c7f2648df2dcfe6eaa99dc4c31f379927082b66dd60bcc0d97e135a7af",
+      "webp": "assets/3d/renders/hestia-logo.webp",
+      "webpBytes": 368720,
+      "webpSha256": "37f68683d9ea4dfef168ef9f2a9fc8b383b6226542db0954889cc1cb423f4274"
+    },
+    {
+      "source": "assets/3d/historia-3d-logo.glb",
+      "sourceBytes": 61123424,
+      "sourceSha256": "666830541e669568d96092cdce3c1e4c0d550f07f0501b2af02833012709a600",
+      "png": "assets/3d/renders/historia-3d-logo.png",
+      "pngBytes": 3394466,
+      "pngSha256": "04c71af518f78acf596bb7db41e45cd553bae94990279c6792b6dc06608e2236",
+      "webp": "assets/3d/renders/historia-3d-logo.webp",
+      "webpBytes": 270732,
+      "webpSha256": "4d50baa10da6793be18805c22747394e8e5604bdfa803ef9afb344cc65674cc2"
+    },
+    {
+      "source": "assets/3d/hodos-3d-logo.glb",
+      "sourceBytes": 63892924,
+      "sourceSha256": "b2ce35c0af0e7bb0196fc5033caffa76423e5f0ddf2d03ad2d51c0331f5ce9d4",
+      "png": "assets/3d/renders/hodos-3d-logo.png",
+      "pngBytes": 3075780,
+      "pngSha256": "b03fe71a995bc586e9a5e670d29a46c4e03df58f61cdb5d841bd47fbfbf25d35",
+      "webp": "assets/3d/renders/hodos-3d-logo.webp",
+      "webpBytes": 257322,
+      "webpSha256": "9b971c5844a6a8f833ac8fbe4b05a7823a83fd5c6eaa4b749fb765dce95e8a29"
+    }
+  ]
+}
