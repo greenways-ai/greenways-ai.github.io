@@ -1,0 +1,58 @@
+image: assets/3d/renders/historia-3d-logo.png
+size: 1600x1600
+alpha_bbox: (148, 158, 1444, 1546)
+alpha_extent: (1296, 1388)
+margins_left_top_right_bottom: (148, 158, 156, 54)
+edge_alpha_max: 0
+occupied_alpha_gt_8: 52.9360%
+opaque_alpha_ge_224: 52.6877%
+alpha_weighted_mean_rgb: (50.53, 55.97, 68.12)
+colour_counts_32x20: B=157, K=106, N=73, O=6, P=1, W=1
+
+silhouette_48x24 (# opaque, + partial, . trace):
+
+
+                +++.    .+++.
+               .#####++######+. ..+++
+           ..++######################+
+          .###########################+
+          +############################+
+         +##############################++
+       .+#################################+.
+    .+#####################################.
+    +####################################+
+    +###################################.
+     +#################################+
+     .################################+..
+      .##################################.
+       .+##############################+.
+          +###########################+
+        .+#############################+.
+        ################################+
+       .#################################
+        +###############################+
+         .+###########################++
+            .++++###############++++..
+                  .............
+
+colour_32x20 (R O Y G C B P M; W light-neutral, N mid-neutral, K dark):
+
+
+          .BNW..BBBB   .
+        ..NbbNBBbNBBBBBBN
+       NBBbbbBBBbNNNbBbNbN
+      .bBBbKBbpbbbbbbbbNNb.
+      NBBbbbbbKKbNKbBbbKNBBN.
+   .NbNBBKNBKbbbKbKbbBoKobBBN
+   BBbbNbbKNbbbbNbbKbBKKKbbN.
+   NbbKBBKNbKKKKbKKbBKKKKKN
+   .NBbKBbbBbbbKKKbbKKKNNN.
+    NbbBbNNNoNbbKbbbNbbNKNN.
+    .NBBBbKNKNbbbbbNNNNKKNN.
+     ..KKKKKKKKbNKKKoKKKNN
+     .bBbbBBbNNNKKKooNNNNN.
+     KBbKbNNKKKKKKKKKbbbbBN.
+     KbNbbbKKKKKKKbbbKbbNNK.
+     .KKbbbNKKKKKKNbbNNNNKK
+       .KKKKKKKKKKKKKKKKK.
+           ...........
