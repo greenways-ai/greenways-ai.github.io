@@ -1,0 +1,54 @@
+name: Render GLB logo images
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - assets/3d/*.glb
+      - scripts/render-glb-logo.py
+      - scripts/render-logo-images.mjs
+      - scripts/check-logo-renders.mjs
+      - package.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-glb-logo-images-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes blender libegl1 libegl-mesa0 libgl1-mesa-dri python3-numpy webp
+      - name: Render logo images
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+        run: npm run logos:render
+      - name: Verify generated assets
+        run: |
+          npm run logos:check
+          npm test
+      - name: Commit generated images
+        run: |
+          git add assets/3d/renders
+          if git diff --cached --quiet; then
+            echo "Logo images are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Render GLB logo images"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
