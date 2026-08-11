@@ -1,0 +1,5 @@
+greenways-3d-logo.png: size=1600x1600 bbox=(502, 294, 1176, 1344) margins=(502, 294, 424, 256) edge_alpha=0
+greenways-os-logo.png: size=1600x1600 bbox=(455, 331, 1157, 1306) margins=(455, 331, 443, 294) edge_alpha=0
+hestia-logo.png: size=1600x1600 bbox=(358, 424, 1261, 1295) margins=(358, 424, 339, 305) edge_alpha=0
+historia-3d-logo.png: size=1600x1600 bbox=(339, 346, 1256, 1327) margins=(339, 346, 344, 273) edge_alpha=0
+hodos-3d-logo.png: size=1600x1600 bbox=(424, 347, 1254, 1330) margins=(424, 347, 346, 270) edge_alpha=0
