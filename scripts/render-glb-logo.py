@@ -11,6 +11,9 @@ from pathlib import Path
 import bpy
 from mathutils import Matrix, Vector
 
+FRAME_PADDING = 1.25
+MAX_EDGE_ALPHA = 1.0 / 255.0
+
 
 def parse_arguments() -> argparse.Namespace:
     arguments = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
@@ -130,12 +133,32 @@ def configure_camera(
     camera_data.clip_start = 0.01
     camera_data.clip_end = 100.0
 
+    # Blender defers matrix_world updates after changing rotation_euler. Reading the
+    # camera matrix before this update frames the model in world X/Y instead of the
+    # actual camera plane, which can clip tall or oblique logos.
+    bpy.context.view_layer.update()
+
     _, _, points = bounds(geometry)
     inverse = camera.matrix_world.inverted()
     camera_points = [inverse @ point for point in points]
-    half_width = max(abs(point.x) for point in camera_points)
-    half_height = max(abs(point.y) for point in camera_points)
-    camera_data.ortho_scale = max(2.0 * half_width, 2.0 * half_height) * 1.18
+    minimum_x = min(point.x for point in camera_points)
+    maximum_x = max(point.x for point in camera_points)
+    minimum_y = min(point.y for point in camera_points)
+    maximum_y = max(point.y for point in camera_points)
+
+    projected_center = Vector(
+        (
+            (minimum_x + maximum_x) * 0.5,
+            (minimum_y + maximum_y) * 0.5,
+            0.0,
+        )
+    )
+    camera.location += camera.matrix_world.to_3x3() @ projected_center
+    bpy.context.view_layer.update()
+
+    projected_width = maximum_x - minimum_x
+    projected_height = maximum_y - minimum_y
+    camera_data.ortho_scale = max(projected_width, projected_height) * FRAME_PADDING
 
 
 def configure_world_and_lighting() -> None:
@@ -200,6 +223,32 @@ def configure_render(options: argparse.Namespace) -> None:
     scene.view_settings.exposure = 0.0
 
 
+def validate_transparent_border(output: Path) -> None:
+    image = bpy.data.images.load(str(output), check_existing=False)
+    try:
+        width, height = image.size
+        pixels = image.pixels
+        edge_alpha = 0.0
+        for x in range(width):
+            edge_alpha = max(
+                edge_alpha,
+                pixels[(x * 4) + 3],
+                pixels[(((height - 1) * width + x) * 4) + 3],
+            )
+        for y in range(height):
+            edge_alpha = max(
+                edge_alpha,
+                pixels[((y * width) * 4) + 3],
+                pixels[((y * width + width - 1) * 4) + 3],
+            )
+        if edge_alpha > MAX_EDGE_ALPHA:
+            raise RuntimeError(
+                f"Rendered logo touches the image boundary (maximum edge alpha {edge_alpha:.4f})"
+            )
+    finally:
+        bpy.data.images.remove(image)
+
+
 def main() -> None:
     options = parse_arguments()
     options.input = options.input.resolve()
@@ -220,6 +269,7 @@ def main() -> None:
     configure_world_and_lighting()
     configure_render(options)
     bpy.ops.render.render(write_still=True)
+    validate_transparent_border(options.output)
     print(f"Rendered {options.input.name} -> {options.output}")
 
 
