@@ -1,0 +1,33 @@
+name: Prepare logo render previews
+
+on:
+  push:
+    branches: [agent/render-glb-logo-images]
+    paths:
+      - .github/workflows/preview-logo-renders.yml
+
+permissions:
+  contents: write
+
+jobs:
+  preview:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create compact textual previews
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes webp
+          mkdir -p .preview-logo-renders
+          for source in assets/3d/renders/*.png; do
+            name="$(basename "$source" .png)"
+            cwebp -quiet -q 70 -resize 320 320 "$source" -o "/tmp/${name}.webp"
+            base64 --wrap=0 "/tmp/${name}.webp" > ".preview-logo-renders/${name}.webp.b64"
+          done
+          git add .preview-logo-renders
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Stage compact logo render previews"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
