@@ -6,9 +6,13 @@
   "license": "Apache-2.0",
   "scripts": {
     "fix:og": "node scripts/apply-social-preview-contract.mjs",
+    "models:optimize": "node scripts/optimize-model.mjs",
     "test": "node --test test/*.test.mjs"
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.4.2"
   }
 }

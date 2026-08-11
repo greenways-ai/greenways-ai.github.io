@@ -29,6 +29,25 @@ npm test
 
 The same suite runs on pull requests and pushes to `main` through `.github/workflows/visual-language.yml`. It verifies the pinned upstream blobs, adaptive light/dark/automatic modes, the v4 sigil and favicon assets, complete project navigation, token scoping, accessible contrast, reduced-motion support, and the absence of legacy mark dimensions.
 
+## Web 3D models
+
+Full-resolution GLB sources live in `assets/3d`. Generate lightweight selector
+and detail variants with:
+
+```sh
+npm run models:optimize -- assets/3d/greenways-3d-logo.glb
+```
+
+Generated variants are written to `assets/3d/web`. Build only one preset or
+choose another output directory with:
+
+```sh
+npm run models:optimize -- path/to/model.glb --preset selector --output-dir path/to/output
+```
+
+Both presets use Meshopt geometry compression and WebP textures. Consumers must
+configure their glTF loader for `KHR_meshopt_compression`.
+
 ## Updating the visual language
 
 1. Choose a tested `greenways-ai/visual-language` release or commit.
