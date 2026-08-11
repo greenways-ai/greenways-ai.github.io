@@ -52,8 +52,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .bootstrap-logo-render .github/workflows/bootstrap-logo-images.yml
-          git add -A
+          git add README.md package.json assets/3d/renders \
+            scripts/render-glb-logo.py scripts/render-logo-images.mjs scripts/check-logo-renders.mjs
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Render GLB logo images"
