@@ -40,7 +40,7 @@ jobs:
       - name: Install renderer
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes blender webp
+          sudo apt-get install --no-install-recommends --yes blender python3-numpy webp
       - name: Render and verify logo images
         run: |
           npm run logos:render
