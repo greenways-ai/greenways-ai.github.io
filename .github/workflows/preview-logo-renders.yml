@@ -15,19 +15,130 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create compact textual previews
+      - name: Create compact visual inspections
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes webp
+          sudo apt-get install --no-install-recommends --yes python3-pil webp
           mkdir -p .preview-logo-renders
           for source in assets/3d/renders/*.png; do
             name="$(basename "$source" .png)"
             cwebp -quiet -q 70 -resize 320 320 "$source" -o "/tmp/${name}.webp"
             base64 --wrap=0 "/tmp/${name}.webp" > ".preview-logo-renders/${name}.webp.b64"
           done
+          python3 - <<'PY'
+          from __future__ import annotations
+
+          import colorsys
+          from collections import Counter
+          from pathlib import Path
+
+          from PIL import Image, ImageStat
+
+          output = Path(".preview-logo-renders")
+
+          def colour_symbol(pixel: tuple[int, int, int, int]) -> str:
+              red, green, blue, alpha = pixel
+              if alpha < 16:
+                  return " "
+              if alpha < 96:
+                  return "."
+              value = max(red, green, blue) / 255
+              hue, saturation, _ = colorsys.rgb_to_hsv(red / 255, green / 255, blue / 255)
+              if value < 0.16:
+                  return "K"
+              if saturation < 0.12:
+                  return "W" if value > 0.65 else "N"
+              degrees = hue * 360
+              if degrees < 15 or degrees >= 345:
+                  symbol = "R"
+              elif degrees < 45:
+                  symbol = "O"
+              elif degrees < 75:
+                  symbol = "Y"
+              elif degrees < 165:
+                  symbol = "G"
+              elif degrees < 195:
+                  symbol = "C"
+              elif degrees < 255:
+                  symbol = "B"
+              elif degrees < 315:
+                  symbol = "P"
+              else:
+                  symbol = "M"
+              return symbol.lower() if value < 0.45 else symbol
+
+          for source in sorted(Path("assets/3d/renders").glob("*.png")):
+              image = Image.open(source).convert("RGBA")
+              width, height = image.size
+              alpha = image.getchannel("A")
+              bbox = alpha.getbbox()
+              histogram = alpha.histogram()
+              occupied = sum(histogram[8:])
+              opaque = sum(histogram[224:])
+              edge_alpha = max(
+                  alpha.crop((0, 0, width, 1)).getextrema()[1],
+                  alpha.crop((0, height - 1, width, height)).getextrema()[1],
+                  alpha.crop((0, 0, 1, height)).getextrema()[1],
+                  alpha.crop((width - 1, 0, width, height)).getextrema()[1],
+              )
+              mean = ImageStat.Stat(image.convert("RGB"), mask=alpha).mean
+
+              if bbox:
+                  left, top, right, bottom = bbox
+                  margins = (left, top, width - right, height - bottom)
+                  extent = (right - left, bottom - top)
+              else:
+                  margins = (width, height, width, height)
+                  extent = (0, 0)
+
+              silhouette_alpha = alpha.resize((48, 24), Image.Resampling.LANCZOS)
+              silhouette_rows = []
+              for row in range(24):
+                  symbols = []
+                  for column in range(48):
+                      value = silhouette_alpha.getpixel((column, row))
+                      symbols.append("#" if value >= 192 else "+" if value >= 64 else "." if value >= 8 else " ")
+                  silhouette_rows.append("".join(symbols).rstrip())
+
+              colour_image = image.resize((32, 20), Image.Resampling.LANCZOS)
+              colour_rows = []
+              colour_counts: Counter[str] = Counter()
+              for row in range(20):
+                  symbols = []
+                  for column in range(32):
+                      symbol = colour_symbol(colour_image.getpixel((column, row)))
+                      symbols.append(symbol)
+                      if symbol not in {" ", "."}:
+                          colour_counts[symbol.upper()] += 1
+                  colour_rows.append("".join(symbols).rstrip())
+
+              report = [
+                  f"image: {source.as_posix()}",
+                  f"size: {width}x{height}",
+                  f"alpha_bbox: {bbox}",
+                  f"alpha_extent: {extent}",
+                  f"margins_left_top_right_bottom: {margins}",
+                  f"edge_alpha_max: {edge_alpha}",
+                  f"occupied_alpha_gt_8: {occupied / (width * height):.4%}",
+                  f"opaque_alpha_ge_224: {opaque / (width * height):.4%}",
+                  f"alpha_weighted_mean_rgb: {tuple(round(value, 2) for value in mean)}",
+                  "colour_counts_32x20: " + ", ".join(f"{key}={value}" for key, value in sorted(colour_counts.items())),
+                  "",
+                  "silhouette_48x24 (# opaque, + partial, . trace):",
+                  *silhouette_rows,
+                  "",
+                  "colour_32x20 (R O Y G C B P M; W light-neutral, N mid-neutral, K dark):",
+                  *colour_rows,
+                  "",
+              ]
+              (output / f"{source.stem}.inspection.txt").write_text("\n".join(report), encoding="utf-8")
+          PY
           git add .preview-logo-renders
+          if git diff --cached --quiet; then
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Stage compact logo render previews"
+          git commit -m "Stage compact logo render inspections"
           git push origin "HEAD:${GITHUB_REF_NAME}"
