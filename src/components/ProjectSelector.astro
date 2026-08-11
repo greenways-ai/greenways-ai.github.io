@@ -1,0 +1,67 @@
+---
+const projects = [
+  { id: "hestia", name: "Hestia", description: "Private identity, bounded agents, approvals, and accountable work receipts.", accent: "#e66d42", glow: "rgba(230,109,66,.55)", scene: "sovereign-hearth", href: "/hestia/" },
+  { id: "hoplite", name: "Hoplite", description: "A high-performance Hara application server built directly into Nginx.", accent: "#20c7df", glow: "rgba(32,199,223,.58)", scene: "open-gate", href: "/hoplite/" },
+  { id: "historia", name: "Historia", description: "Git-native temporal memory for code, conversations, and agent context.", accent: "#426fa6", glow: "rgba(66,111,166,.58)", scene: "raven-library", href: "/historia/" },
+  { id: "hodos", name: "Hodos", description: "A portable world format and capability boundary for browser-native worlds.", accent: "#58a983", glow: "rgba(88,169,131,.58)", scene: "moth-theatre", href: "/hodos/" },
+  { id: "tahto", name: "Tahto", description: "Semantic collections, stable identities, typed links, roots, and synchronization.", accent: "#d8b85a", glow: "rgba(216,184,90,.58)", scene: "paired-observatories", href: "/tahto/" },
+  { id: "ignatius", name: "Ignatius", description: "A signed PostgreSQL chain for ordered work, canonical state, and exact receipts.", accent: "#e0b51a", glow: "rgba(224,181,26,.58)", scene: "ordered-nave", href: "/ignatius/" },
+];
+const visualBase = "https://oss.greenways.ai/visual-language";
+const art = (project: typeof projects[number], mode: "day" | "night", mobile = false) => `${visualBase}/artwork/${project.id}/${project.scene}-${mode}${mobile ? "-mobile" : ""}.webp`;
+---
+
+<section id="projects" class="selector" data-selector style={`--project-accent:${projects[0].accent};--project-glow:${projects[0].glow}`}>
+  <div class="selector__art" aria-hidden="true">
+    {projects.map((project, position) => (
+      <picture class:list={["selector__picture", position === 0 && "is-active"]} data-project-art={project.id}>
+        <source media="(max-width: 700px) and (prefers-color-scheme: dark)" srcset={art(project, "night", true)} />
+        <source media="(max-width: 700px)" srcset={art(project, "day", true)} />
+        <source media="(prefers-color-scheme: dark)" srcset={art(project, "night")} />
+        <img src={art(project, "day")} alt="" loading={position === 0 ? "eager" : "lazy"} />
+      </picture>
+    ))}
+  </div>
+  <div class="selector__veil" aria-hidden="true"></div>
+  <div class="selector__shell">
+    <div class="selector__intro"><p class="technical-kicker"><i></i> Greenways · open foundations</p><h1>Open Source</h1><p>Durable tools, open standards, and public infrastructure for systems that need to last.</p></div>
+    <section class="selector__stage" aria-label="Selected Greenways open-source project" aria-live="polite">
+      <img data-active-sigil src={`${visualBase}/favicons/${projects[0].id}.svg`} alt={`${projects[0].name} sigil`} />
+      <div><p data-active-index>01 / 06</p><h2 data-active-name>{projects[0].name}</h2><p data-active-description>{projects[0].description}</p><a data-active-link href={projects[0].href}>Open {projects[0].name} <span aria-hidden="true">→</span></a></div>
+    </section>
+    <div class="selector__choices" role="list" aria-label="Choose an open-source project">
+      {projects.map((project, position) => (
+        <button class:list={["project-choice", position === 0 && "is-selected"]} type="button" role="listitem" data-project-select data-project={project.id} data-name={project.name} data-index={String(position + 1).padStart(2, "0")} data-href={project.href} data-description={project.description} data-accent={project.accent} data-glow={project.glow} aria-pressed={position === 0 ? "true" : "false"}>
+          <span class="project-choice__pedestal"><img src={`${visualBase}/favicons/${project.id}.svg`} alt="" /></span><span>{project.name}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-selector]");
+  const choices = [...document.querySelectorAll<HTMLButtonElement>("[data-project-select]")];
+  const sigil = root?.querySelector<HTMLImageElement>("[data-active-sigil]");
+  const index = root?.querySelector<HTMLElement>("[data-active-index]");
+  const name = root?.querySelector<HTMLElement>("[data-active-name]");
+  const description = root?.querySelector<HTMLElement>("[data-active-description]");
+  const link = root?.querySelector<HTMLAnchorElement>("[data-active-link]");
+  function activate(choice: HTMLButtonElement) {
+    const data = choice.dataset;
+    choices.forEach((item) => { const active = item === choice; item.classList.toggle("is-selected", active); item.setAttribute("aria-pressed", String(active)); });
+    root?.querySelectorAll<HTMLElement>("[data-project-art]").forEach((item) => item.classList.toggle("is-active", item.dataset.projectArt === data.project));
+    root?.style.setProperty("--project-accent", data.accent || ""); root?.style.setProperty("--project-glow", data.glow || "");
+    if (sigil) { sigil.src = `https://oss.greenways.ai/visual-language/favicons/${data.project}.svg`; sigil.alt = `${data.name} sigil`; }
+    if (index) index.textContent = `${data.index} / 06`; if (name) name.textContent = data.name || ""; if (description) description.textContent = data.description || "";
+    if (link) { link.href = data.href || "#"; link.innerHTML = `Open ${data.name} <span aria-hidden="true">→</span>`; }
+  }
+  choices.forEach((choice, position) => {
+    choice.addEventListener("click", () => activate(choice));
+    choice.addEventListener("keydown", (event) => {
+      let next = position;
+      if (event.key === "ArrowLeft") next = (position - 1 + choices.length) % choices.length; else if (event.key === "ArrowRight") next = (position + 1) % choices.length; else if (event.key === "Home") next = 0; else if (event.key === "End") next = choices.length - 1; else return;
+      event.preventDefault(); choices[next].focus(); activate(choices[next]);
+    });
+  });
+</script>

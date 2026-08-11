@@ -1,7 +1,7 @@
 {
   "name": "greenways-open-source-site",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
@@ -9,12 +9,26 @@
     "logos:check": "node scripts/check-logo-renders.mjs",
     "logos:render": "node scripts/render-logo-images.mjs",
     "models:optimize": "node scripts/optimize-model.mjs",
-    "test": "node --test test/*.test.mjs"
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build && pagefind --site dist && node scripts/copy-static.mjs",
+    "test": "npm run build && node --test test/astro-site.test.mjs",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
   },
   "engines": {
     "node": ">=22"
   },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.2.7",
+    "@fontsource/manrope": "5.2.7",
+    "@fontsource/marcellus": "5.2.6",
+    "@greenways-ai/visual-language": "https://github.com/greenways-ai/visual-language/archive/927d25ce1232ec5a4fc27876329073ad4b82ca54.tar.gz",
+    "astro": "7.1.6",
+    "pagefind": "1.4.0",
+    "sharp": "0.35.3"
+  },
   "devDependencies": {
-    "@gltf-transform/cli": "^4.4.2"
+    "@astrojs/check": "0.9.10",
+    "typescript": "5.9.2"
   }
 }

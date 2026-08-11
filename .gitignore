@@ -1,2 +1,4 @@
 node_modules/
+dist/
+.astro/
 assets/3d/web/

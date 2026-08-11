@@ -1,0 +1,54 @@
+---
+import "@fontsource/marcellus/400.css";
+import "@fontsource/manrope/400.css";
+import "@fontsource/manrope/600.css";
+import "@fontsource/manrope/700.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@greenways-ai/visual-language/theme.css";
+import "../styles/global.css";
+import OpenSourceHeader from "../components/OpenSourceHeader.astro";
+
+interface Props { title?: string; description?: string; canonical?: string; }
+const { title = "Open Source · Greenways", description = "Durable public tools, standards, and infrastructure for anyone building on the web.", canonical = "https://oss.greenways.ai/" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light" data-theme-preference="auto" data-project="greenways">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f4f2ec" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://oss.greenways.ai/visual-language/assets/og-greenways.jpg" />
+    <meta property="og:image:secure_url" content="https://oss.greenways.ai/visual-language/assets/og-greenways.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Greenways Open Source — public tools and shared infrastructure" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://oss.greenways.ai/visual-language/assets/og-greenways.jpg" />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("gw-theme") || "auto";
+        const preference = ["auto", "light", "dark"].includes(stored) ? stored : "auto";
+        const resolved = preference === "auto" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : preference;
+        document.documentElement.dataset.theme = resolved;
+        document.documentElement.dataset.themePreference = preference;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <OpenSourceHeader />
+    <main id="main-content"><slot /></main>
+    <footer><span>Greenways Open Source</span><span>Six open foundations · Charter 1.0</span></footer>
+    <script>import "@greenways-ai/visual-language/theme.js";</script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+---
+const principles = [
+  ["open-by-default", "OPEN BY DEFAULT", "Source, licence, and decisions are visible.", "Qualifying projects publish their source in a public repository under an explicit, recognised open-source licence. The exact licence is stated by each repository; the Greenways signature never replaces or obscures it."],
+  ["usable-freedom", "USABLE FREEDOM", "Open means useful beyond Greenways.", "People may inspect, run, modify, redistribute, and use the work commercially according to its stated licence. Public source that cannot be meaningfully used is not enough."],
+  ["public-stewardship", "PUBLIC STEWARDSHIP", "Direction is explained, not merely announced.", "Greenways publishes material architectural decisions, compatibility changes, release notes, and security channels. Maintainers may lead decisively while keeping the reasoning inspectable."],
+  ["interoperability", "INTEROPERABILITY", "Interfaces should outlive implementations.", "Protocols, formats, and compatibility boundaries are documented. Where conformance matters, Greenways works toward executable specifications and public test suites rather than relying on branding alone."],
+  ["contributors", "CONTRIBUTORS", "Contribution is public work with public credit.", "Changes are reviewed in the open whenever security and privacy permit. Contribution requirements should be documented, technically relevant, and applied consistently. Contributors retain visible credit for their work."],
+  ["sustainability", "SUSTAINABILITY", "Open foundations can support a durable business.", "Greenways may sell hosting, integration, support, certification, or managed experiences. Commercial services do not reduce the rights already granted by a project’s open-source licence."],
+  ["identity", "IDENTITY", "Code freedom and project identity are separate.", "Software licences govern the covered work. Greenways and project names, logos, certification marks, and claims of official compatibility remain subject to their own policies. Forks are welcome; misleading endorsement is not."],
+];
+---
+
+<section id="charter" class="charter">
+  <header><p class="technical-kicker">01 · Open Source Charter · 1.0</p><h2>Public infrastructure.<br />Precisely stewarded.</h2><p>Greenways builds durable tools in public. The charter defines what people can expect when a project carries the Greenways Open Source signature.</p></header>
+  <div class="charter__layout">
+    <nav aria-label="Charter sections">{principles.map(([id, label], position) => <a href={`#${id}`}>{String(position + 1).padStart(2, "0")} · {label.toLowerCase()}</a>)}</nav>
+    <div class="charter__principles">
+      {principles.map(([id, label, heading, copy], position) => <article id={id}><small>{String(position + 1).padStart(2, "0")} · {label}</small><h3>{heading}</h3><p>{copy}</p></article>)}
+      <article class="charter__signature"><small>THE SIGNATURE</small><h3>A Greenways Open Source Project</h3><p>This means the project has public source, an explicit open-source licence, visible stewardship, and a maintained relationship to this charter. The repository’s <code>LICENSE</code> file is always authoritative.</p></article>
+    </div>
+  </div>
+</section>
