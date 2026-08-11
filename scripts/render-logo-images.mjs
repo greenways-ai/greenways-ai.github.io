@@ -207,7 +207,7 @@ const manifest = {
   protocol: "greenways.logo-render-manifest/1",
   renderer: {
     blender: blenderVersion,
-    cameraPreset: "isometric-front/v1",
+    cameraPreset: "isometric-front/v2",
     samples: options.samples,
     size: options.size,
     transparent: true,
