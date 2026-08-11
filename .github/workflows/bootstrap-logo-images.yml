@@ -1,0 +1,58 @@
+name: Bootstrap GLB logo images
+
+on:
+  push:
+    branches: [agent/render-glb-logo-images]
+    paths:
+      - .github/workflows/bootstrap-logo-images.yml
+      - .bootstrap-logo-render/**
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Restore rendering tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          restore() {
+            local payload="$1" output="$2"
+            mkdir -p "$(dirname "$output")"
+            base64 --decode "$payload" | gzip --decompress > "$output"
+          }
+          restore .bootstrap-logo-render/scripts_render-glb-logo.py.gz.b64 scripts/render-glb-logo.py
+          restore .bootstrap-logo-render/scripts_render-logo-images.mjs.gz.b64 scripts/render-logo-images.mjs
+          restore .bootstrap-logo-render/scripts_check-logo-renders.mjs.gz.b64 scripts/check-logo-renders.mjs
+          restore .bootstrap-logo-render/.github_workflows_render-logo-images.yml.gz.b64 .github/workflows/render-logo-images.yml
+          restore .bootstrap-logo-render/.github_workflows_visual-language.yml.gz.b64 .github/workflows/visual-language.yml
+          chmod +x scripts/render-glb-logo.py scripts/render-logo-images.mjs scripts/check-logo-renders.mjs
+      - name: Install renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes blender webp
+      - name: Render and verify logo images
+        run: |
+          npm run logos:render
+          npm run logos:check
+          npm test
+      - name: Publish renderer and generated images
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .bootstrap-logo-render .github/workflows/bootstrap-logo-images.yml
+          git add -A
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Render GLB logo images"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
